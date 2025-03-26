@@ -1,27 +1,37 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  JoinColumn,
+} from 'typeorm';
 import { Machine } from './machine.entity';
 import { Employee } from './employee.entity';
 
 @Entity('maintenance')
 export class Maintenance {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @ManyToOne(() => Machine, (table) => table.maintenanceRecords)
-    machineId: Machine;
+  @ManyToOne(() => Machine)
+  @JoinColumn({ name: 'machineId' })
+  machineId: Machine;
 
-    @ManyToOne(() => Employee)
-    employeeId: Employee;
+  @ManyToOne(() => Employee)
+  @JoinColumn({ name: 'employeeId' })
+  employeeId: Employee;
 
-    @Column()
-    comment: string;
+  @Column({ type: 'varchar' })
+  comment: string;
 
-    @Column()
-    nextMaintenance: Date;
+  @Column({ nullable: true })
+  nextMaintenance: Date;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

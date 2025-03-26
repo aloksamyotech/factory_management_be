@@ -1,23 +1,30 @@
-import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Product } from "./product.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Product } from './product.entity';
 
 @Entity('inventory')
 export class Inventory {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @OneToOne(() => Product)
-    productId: Product
+  @OneToOne(() => Product)
+  productId: Product;
 
-    @Column()
-    quantity: number
+  @Column()
+  quantity: number;
 
-    @Column()
-    type: string
+  @Column()
+  type: string;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

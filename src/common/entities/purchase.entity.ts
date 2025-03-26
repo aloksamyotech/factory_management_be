@@ -1,31 +1,37 @@
-import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Product } from "./product.entity";
-import { Vendor } from "./vendor.entity";
-import { RawMaterial } from "./rawMaterial.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Vendor } from './vendor.entity';
+import { RawMaterial } from './rawMaterial.entity';
 
 @Entity('purchases')
 export class Purchase {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @ManyToOne(() => RawMaterial)
-    productId: RawMaterial[];
+  @ManyToOne(() => RawMaterial)
+  productId: RawMaterial[];
 
-    @ManyToOne(() => Vendor)
-    vendorId: Vendor;
+  @ManyToOne(() => Vendor)
+  vendorId: Vendor;
 
-    @Column({ type: 'int' })
-    totalAmount: number;
+  @Column({ type: 'int' })
+  totalAmount: number;
 
-    @Column({ type: 'boolean' })
-    status: boolean;
+  @Column({ type: 'boolean' })
+  status: boolean;
 
-    @Column()
-    expectedDeliveryDate: Date;
+  @Column()
+  expectedDeliveryDate: Date;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

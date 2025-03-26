@@ -1,37 +1,44 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Machine } from "./machine.entity";
-import { Product } from "./product.entity";
-import { Employee } from "./employee.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Machine } from './machine.entity';
+import { Product } from './product.entity';
+import { Employee } from './employee.entity';
 
 @Entity('production')
 export class Production {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @ManyToOne(() => Machine)
-    machineId: Machine
+  @ManyToOne(() => Machine)
+  machineId: Machine;
 
-    @ManyToOne(() => Employee)
-    employeeId: Employee
+  @ManyToOne(() => Employee)
+  employeeId: Employee;
 
-    @ManyToOne(() => Product)
-    productId: Product
+  @ManyToOne(() => Product)
+  productId: Product;
 
-    @Column()
-    startTime: Date
+  @Column()
+  startTime: Date;
 
-    @Column()
-    endTime: Date
+  @Column()
+  endTime: Date;
 
-    @Column()
-    quantity: Number
+  @Column()
+  quantity: number;
 
-    @Column()
-    status: string
+  @Column()
+  status: string;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

@@ -8,7 +8,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-  ) { }
+  ) {}
 
   create(user: Partial<User>): Promise<User> {
     const newUser = this.usersRepository.create(user);
@@ -19,8 +19,8 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  findOne(id:any): Promise<User | null> {
-    return this.usersRepository.findOne({where:{id}});
+  findOne(id: number): Promise<User | null> {
+    return this.usersRepository.findOne({ where: { id } });
   }
 
   async update(id: number, user: Partial<User>): Promise<User | null> {

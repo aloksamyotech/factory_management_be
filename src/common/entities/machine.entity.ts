@@ -1,29 +1,31 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Maintenance } from "./machineMaintainance.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('machines')
 export class Machine {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ type: 'varchar' })
-    name: string;
+  @Column({ type: 'varchar' })
+  name: string;
 
-    @Column({ type: 'varchar', nullable: true })
-    description: string;
+  @Column({ type: 'varchar', nullable: true })
+  description: string;
 
-    @Column({ type: 'varchar' })
-    type: string;
+  @Column({ type: 'varchar', nullable: true })
+  type: string;
 
-    @Column({ type: 'boolean' })
-    status: boolean;
+  @Column({ type: 'boolean', default: true })
+  status: boolean;
 
-    @OneToMany(() => Maintenance, (table) => table.machineId)
-    maintenanceRecords: Maintenance[];
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

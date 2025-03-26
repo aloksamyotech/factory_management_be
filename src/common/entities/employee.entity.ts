@@ -3,7 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('employees')
@@ -26,11 +26,11 @@ export class Employee {
   @Column({ type: 'int', nullable: true })
   salary: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   department: string;
 
   @CreateDateColumn()
-  DateOfJoining: Date;
+  dateOfJoining: Date;
 
   @CreateDateColumn()
   createdAt: Date;
