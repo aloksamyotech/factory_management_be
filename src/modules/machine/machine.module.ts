@@ -8,6 +8,6 @@ import { Maintenance } from 'src/common/entities/machineMaintainance.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Machine, Maintenance])],
   providers: [MachineService],
-  controllers: [MachineController]
+  controllers: [MachineController],
 })
-export class MachineModule { }
+export class MachineModule {}

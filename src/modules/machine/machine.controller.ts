@@ -5,39 +5,38 @@ import { Maintenance } from 'src/common/entities/machineMaintainance.entity';
 
 @Controller('machine')
 export class MachineController {
-    constructor(private readonly machineService: MachineService) { }
+  constructor(private readonly machineService: MachineService) {}
 
-    @Post()
-    create(@Body() machine: Machine): Promise<Machine> {
-        return this.machineService.create(machine);
-    }
+  @Post()
+  create(@Body() machine: Machine): Promise<Machine> {
+    return this.machineService.create(machine);
+  }
 
-    @Get('/getallmaintenance')
-    findAllMaintenance(): Promise<Maintenance[]> {
-        return this.machineService.findAllMaintenance();
-    }
+  @Get('/getallmaintenance')
+  findAllMaintenance(): Promise<Maintenance[]> {
+    return this.machineService.findAllMaintenance();
+  }
 
-    @Get()
-    findAll(): Promise<Machine[]> {
-        return this.machineService.find();
-    }
+  @Get()
+  findAll(): Promise<Machine[]> {
+    return this.machineService.find();
+  }
 
-    @Get(':id')
-    findOne(@Param('id') id: number): Promise<Machine | null> {
-        return this.machineService.findOne(id);
-    }
+  @Get(':id')
+  findOne(@Param('id') id: number): Promise<Machine | null> {
+    return this.machineService.findOne(id);
+  }
 
-    @Put(':id')
-    update(
-        @Param('id') id: number,
-        @Body() machine: Machine,
-    ): Promise<Machine | null> {
-        return this.machineService.update(id, machine);
-    }
+  @Put(':id')
+  update(
+    @Param('id') id: number,
+    @Body() machine: Machine,
+  ): Promise<Machine | null> {
+    return this.machineService.update(id, machine);
+  }
 
-    @Post('maintenance')
-    addMaintenance(@Body() maintenance: Maintenance): Promise<Maintenance> {
-        return this.machineService.maintenance(maintenance)
-    }
-
+  @Post('maintenance')
+  addMaintenance(@Body() maintenance: Maintenance): Promise<Maintenance> {
+    return this.machineService.maintenance(maintenance);
+  }
 }

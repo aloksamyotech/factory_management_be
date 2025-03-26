@@ -5,7 +5,7 @@ import { CreateEmployeeDto } from 'src/common/dto/createEmp.dto';
 
 @Controller('employee')
 export class EmployeeController {
-  constructor(private readonly employeeService: EmployeeService) { }
+  constructor(private readonly employeeService: EmployeeService) {}
 
   @Post()
   create(@Body() employee: CreateEmployeeDto): Promise<Employee> {

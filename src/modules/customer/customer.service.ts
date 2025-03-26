@@ -5,26 +5,26 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class CustomerService {
-    constructor(
-        @InjectRepository(Customer)
-        private customerRepository: Repository<Customer>,
-    ) { }
+  constructor(
+    @InjectRepository(Customer)
+    private customerRepository: Repository<Customer>,
+  ) {}
 
-    create(customer: Customer): Promise<Customer> {
-        const newCustomer = this.customerRepository.create(customer);
-        return this.customerRepository.save(newCustomer);
-    }
+  create(customer: Customer): Promise<Customer> {
+    const newCustomer = this.customerRepository.create(customer);
+    return this.customerRepository.save(newCustomer);
+  }
 
-    find(): Promise<Customer[]> {
-        return this.customerRepository.find();
-    }
+  find(): Promise<Customer[]> {
+    return this.customerRepository.find();
+  }
 
-    findOne(id: number): Promise<Customer | null> {
-        return this.customerRepository.findOne({ where: { id } });
-    }
+  findOne(id: number): Promise<Customer | null> {
+    return this.customerRepository.findOne({ where: { id } });
+  }
 
-    update(id: number, customer: Customer): Promise<Customer | null> {
-        this.customerRepository.update(id, customer);
-        return this.customerRepository.findOne({ where: { id } });
-    }
+  update(id: number, customer: Customer): Promise<Customer | null> {
+    this.customerRepository.update(id, customer);
+    return this.customerRepository.findOne({ where: { id } });
+  }
 }

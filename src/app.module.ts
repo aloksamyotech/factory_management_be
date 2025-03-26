@@ -9,8 +9,14 @@ import { CustomerModule } from './modules/customer/customer.module';
 import { MachineModule } from './modules/machine/machine.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(databaseConfig), UsersModule, EmployeeModule, CustomerModule, MachineModule],
+  imports: [
+    TypeOrmModule.forRoot(databaseConfig),
+    UsersModule,
+    EmployeeModule,
+    CustomerModule,
+    MachineModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

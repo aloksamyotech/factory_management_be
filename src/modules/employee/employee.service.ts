@@ -8,7 +8,7 @@ export class EmployeeService {
   constructor(
     @InjectRepository(Employee)
     private employeeRepository: Repository<Employee>,
-  ) { }
+  ) {}
 
   create(employee: Employee): Promise<Employee> {
     const newEmployee = this.employeeRepository.create(employee);
