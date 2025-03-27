@@ -20,6 +20,9 @@ export class RawMaterial {
   @Column({ type: 'varchar' })
   unit: string;
 
+  @Column({ type: 'int' })
+  price: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

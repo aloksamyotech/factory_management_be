@@ -20,7 +20,7 @@ export class Vendor {
   @Column({ type: 'varchar', nullable: true })
   email: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar' })
   phoneNumber: string;
 
   @Column({ type: 'varchar' })

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateEmployeeDto } from 'src/common/dto/employee/createEmp.dto';
+import { updateEmployeeDto } from 'src/common/dto/employee/updateEmp.dto';
 import { Employee } from 'src/common/entities/employee.entity';
 import { Repository } from 'typeorm';
 
@@ -10,7 +12,7 @@ export class EmployeeService {
     private employeeRepository: Repository<Employee>,
   ) {}
 
-  create(employee: Employee): Promise<Employee> {
+  create(employee: CreateEmployeeDto): Promise<Employee> {
     const newEmployee = this.employeeRepository.create(employee);
     return this.employeeRepository.save(newEmployee);
   }
@@ -23,7 +25,7 @@ export class EmployeeService {
     return this.employeeRepository.findOne({ where: { id } });
   }
 
-  update(id: number, employee: Employee): Promise<Employee | null> {
+  update(id: number, employee: updateEmployeeDto): Promise<Employee | null> {
     this.employeeRepository.update(id, employee);
     return this.employeeRepository.findOne({ where: { id } });
   }

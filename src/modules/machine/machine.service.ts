@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateMachineDto } from 'src/common/dto/machine/createmachine.dto';
+import { UpdateMachineDto } from 'src/common/dto/machine/updateMachine.dto';
+import { CreateMaintenanceDto } from 'src/common/dto/maintenance/createMaintenance.dto';
+import { Employee } from 'src/common/entities/employee.entity';
 import { Machine } from 'src/common/entities/machine.entity';
 import { Maintenance } from 'src/common/entities/machineMaintainance.entity';
 import { Repository } from 'typeorm';
@@ -12,9 +16,12 @@ export class MachineService {
 
     @InjectRepository(Maintenance)
     private maintenanceRepository: Repository<Maintenance>,
-  ) {}
 
-  create(machine: Machine): Promise<Machine> {
+    @InjectRepository(Employee)
+    private employeeRepository: Repository<Employee>,
+  ) { }
+
+  create(machine: CreateMachineDto): Promise<Machine> {
     const newMachine = this.machineRepository.create(machine);
     return this.machineRepository.save(newMachine);
   }
@@ -27,13 +34,25 @@ export class MachineService {
     return this.machineRepository.findOne({ where: { id } });
   }
 
-  update(id: number, machine: Machine): Promise<Machine | null> {
+  update(id: number, machine: UpdateMachineDto): Promise<Machine | null> {
     this.machineRepository.update(id, machine);
     return this.machineRepository.findOne({ where: { id } });
   }
 
-  maintenance(machine: Maintenance): Promise<Maintenance> {
-    const newMaintenance = this.maintenanceRepository.create(machine);
+  async maintenance(createMaintenanceDto: CreateMaintenanceDto): Promise<Maintenance> {
+    const machine = await this.machineRepository.findOne({ where: { id: createMaintenanceDto.machineId } });
+    const employee = await this.employeeRepository.findOne({ where: { id: createMaintenanceDto.employeeId } });
+    if (!employee || !machine) {
+      throw new Error('not found');
+    }
+    const newMaintenance = this.maintenanceRepository.create(
+      {
+        employeeId: employee,
+        machineId: machine,
+        comment: createMaintenanceDto.comment,
+        nextMaintenance: createMaintenanceDto.nextMaintenance
+      }
+    );
     return this.maintenanceRepository.save(newMaintenance);
   }
 
@@ -41,5 +60,20 @@ export class MachineService {
     return this.maintenanceRepository.find({
       relations: ['employeeId', 'machineId'],
     });
+  }
+
+  findMaintenanceById(id: number): Promise<Maintenance | null> {
+    return this.maintenanceRepository.findOne({
+      relations: ['employeeId', 'machineId'],
+      where: { id },
+    });
+  }
+
+  updateMaintenance(
+    id: number,
+    maintenance: Maintenance,
+  ): Promise<Maintenance | null> {
+    this.maintenanceRepository.update(id, maintenance);
+    return this.maintenanceRepository.findOne({ where: { id } });
   }
 }

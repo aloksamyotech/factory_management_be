@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsString,
   IsEmail,
@@ -7,11 +8,9 @@ import {
   IsDate,
 } from 'class-validator';
 
-export class CreateEmployeeDto {
-  @IsInt()
-  id: number;
-
+export class updateEmployeeDto {
   @IsString()
+  @IsOptional()
   firstName: string;
 
   @IsOptional()
@@ -19,9 +18,11 @@ export class CreateEmployeeDto {
   lastName: string;
 
   @IsEmail()
+  @IsOptional()
   email: string;
 
   @IsString()
+  @IsOptional()
   phoneNumber: string;
 
   @IsOptional()
@@ -30,14 +31,11 @@ export class CreateEmployeeDto {
   salary: number;
 
   @IsString()
+  @IsOptional()
   department: string;
 
   @IsDate()
+  @IsOptional()
+  @Transform(({ value }) => new Date(value))
   dateOfJoining: Date;
-
-  @IsDate()
-  createdAt: Date;
-
-  @IsDate()
-  updatedAt: Date;
 }

@@ -6,6 +6,10 @@ import { Employee } from '../entities/employee.entity';
 import { Customer } from '../entities/customer.entity';
 import { Machine } from '../entities/machine.entity';
 import { Maintenance } from '../entities/machineMaintainance.entity';
+import { Product } from '../entities/product.entity';
+import { Vendor } from '../entities/vendor.entity';
+import { RawMaterial } from '../entities/rawMaterial.entity';
+import { Purchase } from '../entities/purchase.entity';
 dotenv.config();
 
 export const databaseConfig: TypeOrmModuleOptions = {
@@ -15,6 +19,16 @@ export const databaseConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: 'Demo',
-  entities: [User, Employee, Customer, Machine, Maintenance],
+  entities: [
+    User,
+    Employee,
+    Customer,
+    Machine,
+    Maintenance,
+    Product,
+    Vendor,
+    RawMaterial,
+    Purchase,
+  ],
   synchronize: true,
 };

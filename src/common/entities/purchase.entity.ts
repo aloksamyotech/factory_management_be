@@ -2,6 +2,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -14,17 +17,21 @@ export class Purchase {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => RawMaterial)
+  @ManyToMany(() => RawMaterial, {
+    cascade: true,
+  })
+  @JoinTable()
   productId: RawMaterial[];
 
   @ManyToOne(() => Vendor)
+  @JoinColumn({ name: 'vendorId' })
   vendorId: Vendor;
 
   @Column({ type: 'int' })
   totalAmount: number;
 
-  @Column({ type: 'boolean' })
-  status: boolean;
+  @Column({ type: 'varchar', default: 'pending' })
+  status: string;
 
   @Column()
   expectedDeliveryDate: Date;

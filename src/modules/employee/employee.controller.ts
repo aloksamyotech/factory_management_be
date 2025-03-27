@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Param, Body, Put } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Employee } from 'src/common/entities/employee.entity';
-import { CreateEmployeeDto } from 'src/common/dto/createEmp.dto';
+import { CreateEmployeeDto } from 'src/common/dto/employee/createEmp.dto';
+import { updateEmployeeDto } from 'src/common/dto/employee/updateEmp.dto';
 
 @Controller('employee')
 export class EmployeeController {
@@ -13,19 +14,19 @@ export class EmployeeController {
   }
 
   @Get()
-  findAll(): Promise<Employee[]> {
+  findAll(): Promise<CreateEmployeeDto[]> {
     return this.employeeService.find();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Employee | null> {
+  findOne(@Param('id') id: number): Promise<CreateEmployeeDto | null> {
     return this.employeeService.findOne(id);
   }
 
   @Put(':id')
   update(
     @Param('id') id: number,
-    @Body() employee: Employee,
+    @Body() employee: updateEmployeeDto,
   ): Promise<Employee | null> {
     return this.employeeService.update(id, employee);
   }
