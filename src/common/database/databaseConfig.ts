@@ -10,6 +10,8 @@ import { Product } from '../entities/product.entity';
 import { Vendor } from '../entities/vendor.entity';
 import { RawMaterial } from '../entities/rawMaterial.entity';
 import { Purchase } from '../entities/purchase.entity';
+import { Inventory } from '../entities/inventory.entity';
+import { PurchaseItems } from '../entities/purchaseItems.entity';
 dotenv.config();
 
 export const databaseConfig: TypeOrmModuleOptions = {
@@ -18,7 +20,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
   port: 5432,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  database: 'Demo',
+  database: 'FMS',
   entities: [
     User,
     Employee,
@@ -29,6 +31,8 @@ export const databaseConfig: TypeOrmModuleOptions = {
     Vendor,
     RawMaterial,
     Purchase,
+    Inventory,
+    PurchaseItems
   ],
   synchronize: true,
 };

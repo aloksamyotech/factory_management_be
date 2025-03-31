@@ -1,24 +1,54 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Product } from 'src/common/entities/product.entity';
 import { UpdateProductDto } from 'src/common/dto/product/updateProduct.dto';
 import { CreateProductDto } from 'src/common/dto/product/createProduct.dto';
+import { RawMaterial } from 'src/common/entities/rawMaterial.entity';
+import { Inventory } from 'src/common/entities/inventory.entity';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
-  ) {}
 
-  create(createProductDto: CreateProductDto): Promise<Product> {
-    const product = this.productRepository.create(createProductDto);
-    return this.productRepository.save(product);
+    @InjectRepository(RawMaterial)
+    private rawMaterialRepository: Repository<RawMaterial>,
+
+    @InjectRepository(Inventory)
+    private inventoryRepository: Repository<Inventory>
+  ) { }
+
+  async create(createProductDto: CreateProductDto): Promise<Product> {
+
+    const { name, category, price, description, rawMaterial } = createProductDto
+
+    const raw = await this.rawMaterialRepository.find({
+      where: { id: In(rawMaterial ?? []) },
+    });
+    const product = this.productRepository.create({
+      name,
+      category,
+      price,
+      description,
+      rawMaterial: raw
+    });
+    const saveProduct = await this.productRepository.save(product)
+    
+    const inventoryItem = this.inventoryRepository.create({
+      productId: saveProduct,
+      type: 'product'
+    })
+    await this.inventoryRepository.save(inventoryItem)
+
+    return saveProduct;
   }
 
   findAll(): Promise<Product[]> {
-    return this.productRepository.find();
+    return this.productRepository.find({
+      relations: ['rawMaterial'],
+    });
   }
 
   findOne(id: number): Promise<Product | null> {

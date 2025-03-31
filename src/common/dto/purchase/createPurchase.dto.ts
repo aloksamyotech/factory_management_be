@@ -1,13 +1,22 @@
-import { IsInt, IsArray, IsDateString, IsInstance } from 'class-validator';
-import { RawMaterial } from 'src/common/entities/rawMaterial.entity';
+import { Type } from 'class-transformer';
+import { IsInt, IsArray, IsDateString, IsInstance, ValidateNested } from 'class-validator';
+
+class ProductDto {
+  @IsInt()
+  pId: number;
+
+  @IsInt()
+  qty: number;
+}
 
 export class CreatePurchaseDto {
   @IsInt()
   vendorId: number;
 
   @IsArray()
-  @IsInt({ each: true })
-  productId: number[];
+  @ValidateNested({ each: true })
+  @Type(() => ProductDto)
+  productId: ProductDto[];
 
   @IsInt()
   totalAmount: number;

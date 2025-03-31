@@ -6,26 +6,24 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Vendor } from './vendor.entity';
-import { RawMaterial } from './rawMaterial.entity';
+import { PurchaseItems } from './purchaseItems.entity';
 
 @Entity('purchases')
 export class Purchase {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => RawMaterial, {
-    cascade: true,
-  })
-  @JoinTable()
-  productId: RawMaterial[];
-
   @ManyToOne(() => Vendor)
-  @JoinColumn({ name: 'vendorId' })
+  @JoinColumn()
   vendorId: Vendor;
+
+  @OneToMany(() => PurchaseItems, (item) => item.purchase)
+  itemId: PurchaseItems[];
 
   @Column({ type: 'int' })
   totalAmount: number;

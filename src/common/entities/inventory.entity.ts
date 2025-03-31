@@ -2,24 +2,35 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Product } from './product.entity';
+import { RawMaterial } from './rawMaterial.entity';
 
 @Entity('inventory')
 export class Inventory {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Product)
+  @ManyToOne(() => Product, { nullable: true })
   productId: Product;
 
-  @Column()
+  @ManyToOne(() => RawMaterial, { nullable: true })
+  rawMaterialId: RawMaterial
+
+  @Column({ type: 'int', default: 0 })
   quantity: number;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: ['kg', 'ltr', 'pieces'],
+    default: 'pieces'
+  })
+  unit: string
+
+  @Column({ type: 'varchar' })
   type: string;
 
   @CreateDateColumn()

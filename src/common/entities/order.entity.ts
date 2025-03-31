@@ -2,38 +2,38 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Customer } from './customer.entity';
 import { OrderItems } from './orderItems.entity';
 
-@Entity()
+@Entity('orders')
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
   @ManyToOne(() => Customer)
+  @JoinColumn()
   customerId: Customer;
 
-  @ManyToOne(() => OrderItems)
-  orderId: OrderItems[];
-
-  @Column({ type: 'int' })
-  totalQuantity: number;
+  @OneToMany(() => OrderItems, (items) => items.order)
+  itemId: OrderItems[];
 
   @Column({ type: 'int' })
   totalAmount: number;
 
   @Column()
-  ExpectedDeliveryDate: Date;
+  expectedDeliveryDate: Date;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', default: 'pending' })
   status: string;
 
   @CreateDateColumn()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;

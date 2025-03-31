@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { RawMaterial } from './rawMaterial.entity';
 
 @Entity('products')
 export class Product {
@@ -22,6 +25,10 @@ export class Product {
 
   @Column({ type: 'varchar', nullable: true })
   description: string;
+
+  @ManyToMany(() => RawMaterial, { nullable: true })
+  @JoinTable()
+  rawMaterial: RawMaterial[]
 
   @CreateDateColumn()
   createdAt: Date;

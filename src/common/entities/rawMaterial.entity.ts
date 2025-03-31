@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Product } from './product.entity';
 
 @Entity('rawMaterials')
 export class RawMaterial {
@@ -22,6 +24,9 @@ export class RawMaterial {
 
   @Column({ type: 'int' })
   price: number;
+
+  @ManyToMany(() => Product)
+  products: Product[];
 
   @CreateDateColumn()
   createdAt: Date;

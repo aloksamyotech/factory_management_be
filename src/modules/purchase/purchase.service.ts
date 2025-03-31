@@ -5,8 +5,8 @@ import { Purchase } from 'src/common/entities/purchase.entity';
 import { CreatePurchaseDto } from 'src/common/dto/purchase/createPurchase.dto';
 import { RawMaterial } from 'src/common/entities/rawMaterial.entity';
 import { Vendor } from 'src/common/entities/vendor.entity';
-import { error } from 'console';
 import { UpdatePurchaseDto } from 'src/common/dto/purchase/updatePurchase.dto';
+import { PurchaseItems } from 'src/common/entities/purchaseItems.entity';
 
 @Injectable()
 export class PurchaseService {
@@ -17,6 +17,8 @@ export class PurchaseService {
     private rawMaterialRepository: Repository<RawMaterial>,
     @InjectRepository(Vendor)
     private vendorRepository: Repository<Vendor>,
+    @InjectRepository(PurchaseItems)
+    private purchaseItemQtyRepository: Repository<PurchaseItems>
   ) { }
 
   async create(createPurchaseDto: CreatePurchaseDto): Promise<Purchase> {
@@ -26,38 +28,43 @@ export class PurchaseService {
     const vendor = await this.vendorRepository.findOne({
       where: { id: vendorId },
     });
+
     if (!vendor) {
       throw new Error('Vendor not found');
     }
-
-    const products = await this.rawMaterialRepository.find({
-      where: { id: In(productId) },
-    });
-
-    if (products.length !== productId.length) {
-      throw new Error('Some products were not found');
-    }
-
     const purchase = this.purchaseRepository.create({
       vendorId: vendor,
-      productId: products,
       totalAmount,
       expectedDeliveryDate,
     });
+    const savePurchase = await this.purchaseRepository.save(purchase)
 
-    return this.purchaseRepository.save(purchase);
+    productId.map(async (item) => {
+      const raw = await this.rawMaterialRepository.findOne({ where: { id: item.pId } })
+      if (!raw) {
+        return new Error('item not found')
+      }
+      const newPurchase = this.purchaseItemQtyRepository.create({
+        purchase: savePurchase,
+        rawMaterial: raw,
+        quantity: item.qty,
+      });
+      const saved = await this.purchaseItemQtyRepository.save(newPurchase);
+      return saved
+    });
+    return savePurchase;
   }
 
   findAll(): Promise<Purchase[]> {
     return this.purchaseRepository.find({
-      relations: ['productId', 'vendorId'],
+      relations: ['itemId', 'vendorId'],
     });
   }
 
   findOne(id: number): Promise<Purchase | null> {
     return this.purchaseRepository.findOne({
       where: { id },
-      relations: ['productId', 'vendorId'],
+      relations: ['itemId', 'vendorId'],
     });
   }
 
