@@ -11,6 +11,7 @@ import { ProductModule } from './modules/product/product.module';
 import { VendorModule } from './modules/vendor/vendor.module';
 import { RawmaterialModule } from './modules/rawmaterial/rawmaterial.module';
 import { PurchaseModule } from './modules/purchase/purchase.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [
@@ -23,8 +24,9 @@ import { PurchaseModule } from './modules/purchase/purchase.module';
     VendorModule,
     RawmaterialModule,
     PurchaseModule,
+    OrderModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
