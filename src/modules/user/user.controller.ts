@@ -5,18 +5,20 @@ import {
   Param,
   Body,
   Put,
-  Delete,
+  Delete
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { User } from 'src/common/entities/user.entity';
+import { CreateUserDto } from 'src/common/dto/user/user.dto';
+import { LoginDto } from 'src/common/dto/user/login.dto';
 
 @Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post()
-  create(@Body() user: Partial<User>): Promise<User> {
-    return this.usersService.create(user);
+  create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return this.usersService.create(createUserDto);
   }
 
   @Get()
@@ -40,5 +42,11 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: number): Promise<void> {
     return this.usersService.remove(id);
+  }
+
+  @Post('login')
+  login(@Body() login: LoginDto) {
+    const res = this.usersService.login(login)
+    return res
   }
 }
