@@ -8,7 +8,7 @@ import { CreateMaintenanceDto } from 'src/common/dto/maintenance/createMaintenan
 
 @Controller('machine')
 export class MachineController {
-  constructor(private readonly machineService: MachineService) { }
+  constructor(private readonly machineService: MachineService) {}
 
   @Get()
   findAll(): Promise<Machine[]> {
@@ -36,7 +36,9 @@ export class MachineController {
   }
 
   @Post('maintenance')
-  addMaintenance(@Body() createMaintenanceDto: CreateMaintenanceDto): Promise<Maintenance> {
+  addMaintenance(
+    @Body() createMaintenanceDto: CreateMaintenanceDto,
+  ): Promise<Maintenance> {
     return this.machineService.maintenance(createMaintenanceDto);
   }
 

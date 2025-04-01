@@ -28,7 +28,7 @@ export class Product {
 
   @ManyToMany(() => RawMaterial, { nullable: true })
   @JoinTable()
-  rawMaterial: RawMaterial[]
+  rawMaterial: RawMaterial[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -11,19 +11,23 @@ export class EmployeeService {
   constructor(
     @InjectRepository(Employee)
     private employeeRepository: Repository<Employee>,
-  ) { }
+  ) {}
 
   async create(employee: CreateEmployeeDto): Promise<Employee> {
-    const alreadyExist = await this.employeeRepository.findOne({ where: { email: employee.email } })
+    const alreadyExist = await this.employeeRepository.findOne({
+      where: { email: employee.email },
+    });
     if (alreadyExist) {
-      throw new HttpException({
-        success: false,
-        status: HttpStatus.BAD_REQUEST,
-        message: Message.notCreated,
-        timestamp: new Date().toISOString(),
-        data: [],
-      },
-        HttpStatus.BAD_REQUEST)
+      throw new HttpException(
+        {
+          success: false,
+          status: HttpStatus.BAD_REQUEST,
+          message: Message.notCreated,
+          timestamp: new Date().toISOString(),
+          data: [],
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
     const newEmployee = this.employeeRepository.create(employee);
     return this.employeeRepository.save(newEmployee);

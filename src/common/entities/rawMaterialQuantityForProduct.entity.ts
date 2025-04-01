@@ -1,31 +1,31 @@
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Product } from './product.entity';
 import { RawMaterial } from './rawMaterial.entity';
 
 @Entity('rawMaterialQuantityForProduct')
 export class Inventory {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @ManyToOne(()=>Product)
-    productId: Product;
+  @ManyToOne(() => Product)
+  productId: Product;
 
-    @ManyToOne(() => RawMaterial)
-    rawmaterialId: RawMaterial;
+  @ManyToOne(() => RawMaterial)
+  rawmaterialId: RawMaterial;
 
-    @Column()
-    quantity: string;
+  @Column()
+  quantity: string;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

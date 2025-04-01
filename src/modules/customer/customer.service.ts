@@ -10,7 +10,7 @@ export class CustomerService {
   constructor(
     @InjectRepository(Customer)
     private customerRepository: Repository<Customer>,
-  ) { }
+  ) {}
 
   create(customer: CreateCustomerDto): Promise<Customer> {
     const newCustomer = this.customerRepository.create(customer);

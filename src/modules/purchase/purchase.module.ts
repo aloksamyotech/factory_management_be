@@ -8,8 +8,10 @@ import { RawMaterial } from 'src/common/entities/rawMaterial.entity';
 import { PurchaseItems } from 'src/common/entities/purchaseItems.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Purchase, Vendor, RawMaterial, PurchaseItems])],
+  imports: [
+    TypeOrmModule.forFeature([Purchase, Vendor, RawMaterial, PurchaseItems]),
+  ],
   controllers: [PurchaseController],
   providers: [PurchaseService],
 })
-export class PurchaseModule { }
+export class PurchaseModule {}

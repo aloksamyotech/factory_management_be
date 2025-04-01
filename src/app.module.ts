@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,6 +12,7 @@ import { VendorModule } from './modules/vendor/vendor.module';
 import { RawmaterialModule } from './modules/rawmaterial/rawmaterial.module';
 import { PurchaseModule } from './modules/purchase/purchase.module';
 import { OrderModule } from './modules/order/order.module';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
 
 @Module({
   imports: [
@@ -24,9 +25,9 @@ import { OrderModule } from './modules/order/order.module';
     VendorModule,
     RawmaterialModule,
     PurchaseModule,
-    OrderModule
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

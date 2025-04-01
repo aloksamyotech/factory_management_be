@@ -1,26 +1,36 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsDateString, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, Min, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsDateString,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  Min,
+  ValidateNested,
+} from 'class-validator';
 
 class ProductDto {
-    @IsInt()
-    pId: number;
-  
-    @IsInt()
-    qty: number;
-  }
+  @IsInt()
+  pId: number;
+
+  @IsInt()
+  qty: number;
+}
 
 export class CreateOrderDto {
-    @IsInt()
-    customerId: number;
+  @IsInt()
+  customerId: number;
 
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ProductDto)
-    productId: ProductDto[];
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ProductDto)
+  productId: ProductDto[];
 
-    @IsInt()
-    totalAmount: number;
+  @IsInt()
+  totalAmount: number;
 
-    @IsDateString()
-    expectedDeliveryDate: Date;
+  @IsDateString()
+  expectedDeliveryDate: Date;
 }

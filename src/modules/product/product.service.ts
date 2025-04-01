@@ -17,12 +17,12 @@ export class ProductService {
     private rawMaterialRepository: Repository<RawMaterial>,
 
     @InjectRepository(Inventory)
-    private inventoryRepository: Repository<Inventory>
-  ) { }
+    private inventoryRepository: Repository<Inventory>,
+  ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
-
-    const { name, category, price, description, rawMaterial } = createProductDto
+    const { name, category, price, description, rawMaterial } =
+      createProductDto;
 
     const raw = await this.rawMaterialRepository.find({
       where: { id: In(rawMaterial ?? []) },
@@ -32,15 +32,15 @@ export class ProductService {
       category,
       price,
       description,
-      rawMaterial: raw
+      rawMaterial: raw,
     });
-    const saveProduct = await this.productRepository.save(product)
-    
+    const saveProduct = await this.productRepository.save(product);
+
     const inventoryItem = this.inventoryRepository.create({
       productId: saveProduct,
-      type: 'product'
-    })
-    await this.inventoryRepository.save(inventoryItem)
+      type: 'product',
+    });
+    await this.inventoryRepository.save(inventoryItem);
 
     return saveProduct;
   }

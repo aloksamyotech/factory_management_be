@@ -18,8 +18,8 @@ export class PurchaseService {
     @InjectRepository(Vendor)
     private vendorRepository: Repository<Vendor>,
     @InjectRepository(PurchaseItems)
-    private purchaseItemQtyRepository: Repository<PurchaseItems>
-  ) { }
+    private purchaseItemQtyRepository: Repository<PurchaseItems>,
+  ) {}
 
   async create(createPurchaseDto: CreatePurchaseDto): Promise<Purchase> {
     const { vendorId, productId, totalAmount, expectedDeliveryDate } =
@@ -37,12 +37,14 @@ export class PurchaseService {
       totalAmount,
       expectedDeliveryDate,
     });
-    const savePurchase = await this.purchaseRepository.save(purchase)
+    const savePurchase = await this.purchaseRepository.save(purchase);
 
     productId.map(async (item) => {
-      const raw = await this.rawMaterialRepository.findOne({ where: { id: item.pId } })
+      const raw = await this.rawMaterialRepository.findOne({
+        where: { id: item.pId },
+      });
       if (!raw) {
-        return new Error('item not found')
+        return new Error('item not found');
       }
       const newPurchase = this.purchaseItemQtyRepository.create({
         purchase: savePurchase,
@@ -50,7 +52,7 @@ export class PurchaseService {
         quantity: item.qty,
       });
       const saved = await this.purchaseItemQtyRepository.save(newPurchase);
-      return saved
+      return saved;
     });
     return savePurchase;
   }

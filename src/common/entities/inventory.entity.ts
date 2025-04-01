@@ -18,7 +18,7 @@ export class Inventory {
   productId: Product;
 
   @ManyToOne(() => RawMaterial, { nullable: true })
-  rawMaterialId: RawMaterial
+  rawMaterialId: RawMaterial;
 
   @Column({ type: 'int', default: 0 })
   quantity: number;
@@ -26,9 +26,9 @@ export class Inventory {
   @Column({
     type: 'enum',
     enum: ['kg', 'ltr', 'pieces'],
-    default: 'pieces'
+    default: 'pieces',
   })
-  unit: string
+  unit: string;
 
   @Column({ type: 'varchar' })
   type: string;

@@ -36,7 +36,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
     Inventory,
     PurchaseItems,
     Order,
-    OrderItems
+    OrderItems,
   ],
   synchronize: true,
 };

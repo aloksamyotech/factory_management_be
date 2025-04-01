@@ -1,4 +1,10 @@
-import { IsString, IsNumber, IsOptional, IsInt, IsArray } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsInt,
+  IsArray,
+} from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
@@ -17,5 +23,5 @@ export class CreateProductDto {
   @IsOptional()
   @IsArray()
   @IsInt({ each: true })
-  rawMaterial?: number[]
+  rawMaterial?: number[];
 }

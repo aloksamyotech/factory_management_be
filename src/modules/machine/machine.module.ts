@@ -11,4 +11,4 @@ import { Employee } from 'src/common/entities/employee.entity';
   providers: [MachineService],
   controllers: [MachineController],
 })
-export class MachineModule { }
+export class MachineModule {}

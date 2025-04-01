@@ -14,7 +14,7 @@ import { CreatePurchaseDto } from 'src/common/dto/purchase/createPurchase.dto';
 
 @Controller('purchase')
 export class PurchaseController {
-  constructor(private readonly purchaseService: PurchaseService) { }
+  constructor(private readonly purchaseService: PurchaseService) {}
 
   @Post()
   create(@Body() createPurchaseDto: CreatePurchaseDto) {

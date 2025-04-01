@@ -5,7 +5,7 @@ import {
   Param,
   Body,
   Put,
-  Delete
+  Delete,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { User } from 'src/common/entities/user.entity';
@@ -14,7 +14,7 @@ import { LoginDto } from 'src/common/dto/user/login.dto';
 
 @Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
@@ -46,7 +46,7 @@ export class UsersController {
 
   @Post('login')
   login(@Body() login: LoginDto) {
-    const res = this.usersService.login(login)
-    return res
+    const res = this.usersService.login(login);
+    return res;
   }
 }

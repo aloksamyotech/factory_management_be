@@ -1,5 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsArray, IsDateString, IsInstance, ValidateNested } from 'class-validator';
+import {
+  IsInt,
+  IsArray,
+  IsDateString,
+  IsInstance,
+  ValidateNested,
+} from 'class-validator';
 
 class ProductDto {
   @IsInt()

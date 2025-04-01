@@ -10,4 +10,4 @@ import { Inventory } from 'src/common/entities/inventory.entity';
   providers: [RawMaterialService],
   controllers: [RawMaterialController],
 })
-export class RawmaterialModule { }
+export class RawmaterialModule {}

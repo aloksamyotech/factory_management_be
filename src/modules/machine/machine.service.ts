@@ -19,7 +19,7 @@ export class MachineService {
 
     @InjectRepository(Employee)
     private employeeRepository: Repository<Employee>,
-  ) { }
+  ) {}
 
   create(machine: CreateMachineDto): Promise<Machine> {
     const newMachine = this.machineRepository.create(machine);
@@ -39,20 +39,24 @@ export class MachineService {
     return this.machineRepository.findOne({ where: { id } });
   }
 
-  async maintenance(createMaintenanceDto: CreateMaintenanceDto): Promise<Maintenance> {
-    const machine = await this.machineRepository.findOne({ where: { id: createMaintenanceDto.machineId } });
-    const employee = await this.employeeRepository.findOne({ where: { id: createMaintenanceDto.employeeId } });
+  async maintenance(
+    createMaintenanceDto: CreateMaintenanceDto,
+  ): Promise<Maintenance> {
+    const machine = await this.machineRepository.findOne({
+      where: { id: createMaintenanceDto.machineId },
+    });
+    const employee = await this.employeeRepository.findOne({
+      where: { id: createMaintenanceDto.employeeId },
+    });
     if (!employee || !machine) {
       throw new Error('not found');
     }
-    const newMaintenance = this.maintenanceRepository.create(
-      {
-        employeeId: employee,
-        machineId: machine,
-        comment: createMaintenanceDto.comment,
-        nextMaintenance: createMaintenanceDto.nextMaintenance
-      }
-    );
+    const newMaintenance = this.maintenanceRepository.create({
+      employeeId: employee,
+      machineId: machine,
+      comment: createMaintenanceDto.comment,
+      nextMaintenance: createMaintenanceDto.nextMaintenance,
+    });
     return this.maintenanceRepository.save(newMaintenance);
   }
 

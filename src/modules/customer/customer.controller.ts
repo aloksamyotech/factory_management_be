@@ -6,7 +6,7 @@ import { UpdateCustomerDto } from 'src/common/dto/customer/updateCustomer.dto';
 
 @Controller('customer')
 export class CustomerController {
-  constructor(private readonly customerService: CustomerService) { }
+  constructor(private readonly customerService: CustomerService) {}
 
   @Post()
   create(@Body() customer: CreateCustomerDto): Promise<Customer> {
