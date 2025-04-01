@@ -13,8 +13,10 @@ export class ResponseInterceptor implements NestInterceptor {
       map((data) => {
         return {
           success: true,
-          data: data,
+          statusCode: 200,
+          message: 'success',
           timestamp: new Date().toISOString(),
+          data: data,
         };
       }),
     );
