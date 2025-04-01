@@ -5,6 +5,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
+import { Message } from 'src/common/constant/constant';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -14,7 +15,7 @@ export class ResponseInterceptor implements NestInterceptor {
         return {
           success: true,
           statusCode: 200,
-          message: 'success',
+          message: Message.success,
           timestamp: new Date().toISOString(),
           data: data,
         };

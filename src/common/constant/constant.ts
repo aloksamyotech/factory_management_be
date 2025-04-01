@@ -22,4 +22,5 @@ export const Message = {
     incorrrectPassword: 'Incorrect Password',
     inValidData: 'Invalid Data',
     duplicateData: 'Duplicate Data',
+    success: "Success"
 }
