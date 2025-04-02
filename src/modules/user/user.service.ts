@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from 'src/common/dto/user/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
@@ -13,9 +14,10 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto) {
     const { name, email, password, phoneNumber } = createUserDto;
     const hashPassword = await bcrypt.hash(password, 10);
     const user = this.usersRepository.create({
@@ -50,7 +52,7 @@ export class UsersService {
     }
 
     const payload = { user };
-    const key = process.env?.ACCESS_TOKEN_SECRET;
+    const key = this.configService.get('ACCESS_TOKEN_SECRET');
     const token = this.jwtService.sign(payload, {
       secret: key,
       expiresIn: '1d',

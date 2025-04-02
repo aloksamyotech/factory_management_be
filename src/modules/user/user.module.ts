@@ -4,6 +4,7 @@ import { UsersService } from './user.service';
 import { UsersController } from './user.controller';
 import { User } from '../../common/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { JwtModule } from '@nestjs/jwt';
       secret: process.env.ACCESS_TOKEN_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
+    ConfigModule,
   ],
   providers: [UsersService],
   controllers: [UsersController],

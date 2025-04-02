@@ -13,9 +13,11 @@ import { RawmaterialModule } from './modules/rawmaterial/rawmaterial.module';
 import { PurchaseModule } from './modules/purchase/purchase.module';
 import { OrderModule } from './modules/order/order.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(databaseConfig),
     UsersModule,
     EmployeeModule,

@@ -23,4 +23,7 @@ export const Message = {
   inValidData: 'Invalid Data',
   duplicateData: 'Duplicate Data',
   success: 'Success',
+  secretKeyNotFound: 'Secret Key Not Found',
+  invalidToken: 'Invalid Or Expired Token',
+  tokenNotFound: 'Token Not Found',
 };

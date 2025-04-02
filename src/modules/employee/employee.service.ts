@@ -14,15 +14,30 @@ export class EmployeeService {
   ) {}
 
   async create(employee: CreateEmployeeDto): Promise<Employee> {
-    const alreadyExist = await this.employeeRepository.findOne({
+    const mailExist = await this.employeeRepository.findOne({
       where: { email: employee.email },
     });
-    if (alreadyExist) {
+    if (mailExist) {
       throw new HttpException(
         {
           success: false,
           status: HttpStatus.BAD_REQUEST,
-          message: Message.notCreated,
+          message: Message.emailAlreadyRegistered,
+          timestamp: new Date().toISOString(),
+          data: [],
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const numberExist = await this.employeeRepository.findOne({
+      where: { phoneNumber: employee.phoneNumber },
+    });
+    if (numberExist) {
+      throw new HttpException(
+        {
+          success: false,
+          status: HttpStatus.BAD_REQUEST,
+          message: Message.phoneNumberAlreadyRegistered,
           timestamp: new Date().toISOString(),
           data: [],
         },

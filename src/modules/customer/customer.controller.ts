@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { Customer } from 'src/common/entities/customer.entity';
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from 'src/common/dto/customer/createCustomer.dto';
 import { UpdateCustomerDto } from 'src/common/dto/customer/updateCustomer.dto';
+import { CheckToken } from 'src/common/guard/checkToken.guard';
 
 @Controller('customer')
 export class CustomerController {
@@ -14,6 +23,7 @@ export class CustomerController {
   }
 
   @Get()
+  @UseGuards(new CheckToken())
   findAll(): Promise<Customer[]> {
     return this.customerService.find();
   }
