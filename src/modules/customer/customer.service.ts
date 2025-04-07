@@ -11,15 +11,23 @@ export class CustomerService {
   constructor(
     @InjectRepository(Customer)
     private customerRepository: Repository<Customer>,
-  ) {}
+  ) { }
 
   create(customer: CreateCustomerDto): Promise<Customer> {
-    const newCustomer = this.customerRepository.create(customer);
-    return this.customerRepository.save(newCustomer);
+    const data = this.customerRepository.create(customer);
+    const newCustomer = this.customerRepository.save(data)
+    return newCustomer;
   }
 
-  find(): Promise<Customer[]> {
-    return this.customerRepository.find();
+  async find(page: number, limit: number) {
+    const data = await this.customerRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC'
+      }
+    });
+    return data
   }
 
   findOne(id: number): Promise<Customer | null> {

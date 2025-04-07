@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { Customer } from 'src/common/entities/customer.entity';
@@ -15,7 +16,7 @@ import { CheckToken } from 'src/common/guard/checkToken.guard';
 
 @Controller('customer')
 export class CustomerController {
-  constructor(private readonly customerService: CustomerService) {}
+  constructor(private readonly customerService: CustomerService) { }
 
   @Post()
   create(@Body() customer: CreateCustomerDto): Promise<Customer> {
@@ -23,9 +24,9 @@ export class CustomerController {
   }
 
   @Get()
-  @UseGuards(new CheckToken())
-  findAll(): Promise<Customer[]> {
-    return this.customerService.find();
+  // @UseGuards(new CheckToken())
+  findAll(@Query('page') page: number=1, @Query('limit') limit: number=10) {
+    return this.customerService.find(page, limit);
   }
 
   @Get(':id')

@@ -18,6 +18,7 @@ async function bootstrap() {
     new LoggingInterceptor(),
     new ResponseInterceptor(),
   );
+  app.enableCors({})
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new GlobalExceptionHandler(httpAdapterHost));
   app.setGlobalPrefix('api/v1');

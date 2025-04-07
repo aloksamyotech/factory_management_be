@@ -1,3 +1,4 @@
+import { IsEmail, IsNumber, IsPositive, IsString } from 'class-validator';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -11,21 +12,26 @@ export class Employee {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @IsString()
   @Column({ type: 'varchar' })
   firstName: string;
 
+  @IsString()
   @Column({ type: 'varchar', nullable: true })
   lastName: string;
 
+  @IsEmail()
   @Column({ type: 'varchar', unique: true })
   email: string;
 
   @Column({ type: 'varchar', unique: true })
   phoneNumber: string;
 
+  @IsPositive()
   @Column({ type: 'int', nullable: true })
   salary: number;
 
+  @IsString()
   @Column({ type: 'varchar', nullable: true })
   department: string;
 

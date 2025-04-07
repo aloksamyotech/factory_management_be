@@ -1,3 +1,4 @@
+import { IsEmail, IsString } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -11,11 +12,21 @@ export class Customer {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @IsString()
   @Column({ type: 'varchar' })
   firstName: string;
 
+  @IsString()
   @Column({ type: 'varchar', nullable: true })
   lastName: string;
+
+  @IsEmail()
+  @Column({ type: 'varchar', nullable: true })
+  email: string;
+
+  @IsString()
+  @Column({ type: 'varchar', nullable: true })
+  phoneNumber: string;
 
   @CreateDateColumn()
   createdAt: Date;
