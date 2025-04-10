@@ -10,15 +10,24 @@ export class VendorService {
   constructor(
     @InjectRepository(Vendor)
     private vendorRepository: Repository<Vendor>,
-  ) {}
+  ) { }
 
-  create(createVendorDto: CreateVendorDto): Promise<Vendor> {
-    const vendor = this.vendorRepository.create(createVendorDto);
-    return this.vendorRepository.save(vendor);
+  create(createVendorDto: CreateVendorDto) {
+    const newVendor = this.vendorRepository.create(createVendorDto);
+    const data = this.vendorRepository.save(newVendor);
+    return data
   }
 
-  findAll(): Promise<Vendor[]> {
-    return this.vendorRepository.find();
+  async findAll(page: number, limit: number) {
+
+    const data = await this.vendorRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC'
+      }
+    });
+    return data
   }
 
   findOne(id: number): Promise<Vendor | null> {

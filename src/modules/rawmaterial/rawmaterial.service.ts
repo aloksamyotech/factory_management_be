@@ -14,7 +14,7 @@ export class RawMaterialService {
 
     @InjectRepository(Inventory)
     private inventoryRepository: Repository<Inventory>,
-  ) {}
+  ) { }
 
   async create(
     createRawMaterialDto: CreateRawMaterialDto,
@@ -30,8 +30,15 @@ export class RawMaterialService {
     return saveMaterial;
   }
 
-  findAll(): Promise<RawMaterial[]> {
-    return this.rawMaterialRepository.find();
+  async findAll(page: number, limit: number) {
+    const data = await this.rawMaterialRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC'
+      }
+    })
+    return data
   }
 
   findOne(id: number): Promise<RawMaterial | null> {
