@@ -20,13 +20,18 @@ export class RawMaterialController {
   @Post()
   async create(
     @Body() createRawMaterialDto: CreateRawMaterialDto,
-  ): Promise<RawMaterial> {
+  ) {
     return this.rawMaterialService.create(createRawMaterialDto);
   }
 
   @Get()
   async findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
     return this.rawMaterialService.findAll(page, limit);
+  }
+
+  @Get('/list')
+  getAll() {
+    return this.rawMaterialService.getAll();
   }
 
   @Get(':id')

@@ -13,4 +13,7 @@ export class CreateCustomerDto {
 
   @IsOptional()
   email: string
+
+  @IsOptional()
+  address: string
 }

@@ -19,12 +19,11 @@ export class PurchaseService {
     private vendorRepository: Repository<Vendor>,
     @InjectRepository(PurchaseItems)
     private purchaseItemQtyRepository: Repository<PurchaseItems>,
-  ) {}
+  ) { }
 
   async create(createPurchaseDto: CreatePurchaseDto): Promise<Purchase> {
     const { vendorId, productId, totalAmount, expectedDeliveryDate } =
       createPurchaseDto;
-
     const vendor = await this.vendorRepository.findOne({
       where: { id: vendorId },
     });
@@ -38,10 +37,9 @@ export class PurchaseService {
       expectedDeliveryDate,
     });
     const savePurchase = await this.purchaseRepository.save(purchase);
-
     productId.map(async (item) => {
       const raw = await this.rawMaterialRepository.findOne({
-        where: { id: item.pId },
+        where: { id: item.productId },
       });
       if (!raw) {
         return new Error('item not found');
@@ -49,7 +47,7 @@ export class PurchaseService {
       const newPurchase = this.purchaseItemQtyRepository.create({
         purchase: savePurchase,
         rawMaterial: raw,
-        quantity: item.qty,
+        quantity: item.quantity,
       });
       const saved = await this.purchaseItemQtyRepository.save(newPurchase);
       return saved;
@@ -57,10 +55,16 @@ export class PurchaseService {
     return savePurchase;
   }
 
-  findAll(): Promise<Purchase[]> {
-    return this.purchaseRepository.find({
-      relations: ['itemId', 'vendorId'],
+  async findAll(page: number, limit: number) {
+    const data = await this.purchaseRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC'
+      },
+      relations: ['itemId', 'itemId.rawMaterial', 'vendorId'],
     });
+    return data
   }
 
   findOne(id: number): Promise<Purchase | null> {

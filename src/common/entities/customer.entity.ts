@@ -28,6 +28,10 @@ export class Customer {
   @Column({ type: 'varchar', nullable: true })
   phoneNumber: string;
 
+  @IsString()
+  @Column({ type: 'varchar', nullable: true })
+  address: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

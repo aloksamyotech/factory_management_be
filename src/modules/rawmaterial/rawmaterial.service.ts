@@ -18,7 +18,7 @@ export class RawMaterialService {
 
   async create(
     createRawMaterialDto: CreateRawMaterialDto,
-  ): Promise<RawMaterial> {
+  ) {
     const rawMaterial = this.rawMaterialRepository.create(createRawMaterialDto);
     const saveMaterial = await this.rawMaterialRepository.save(rawMaterial);
 
@@ -26,6 +26,7 @@ export class RawMaterialService {
       rawMaterialId: saveMaterial,
       type: 'rawMaterial',
     });
+
     await this.inventoryRepository.save(inventoryItem);
     return saveMaterial;
   }
@@ -38,6 +39,11 @@ export class RawMaterialService {
         createdAt: 'DESC'
       }
     })
+    return data
+  }
+
+  async getAll() {
+    const data = await this.rawMaterialRepository.find()
     return data
   }
 

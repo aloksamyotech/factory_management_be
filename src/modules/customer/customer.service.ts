@@ -13,7 +13,7 @@ export class CustomerService {
     private customerRepository: Repository<Customer>,
   ) { }
 
-  create(customer: CreateCustomerDto): Promise<Customer> {
+  create(customer: CreateCustomerDto) {
     const data = this.customerRepository.create(customer);
     const newCustomer = this.customerRepository.save(data)
     return newCustomer;

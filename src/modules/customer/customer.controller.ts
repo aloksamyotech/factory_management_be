@@ -19,13 +19,13 @@ export class CustomerController {
   constructor(private readonly customerService: CustomerService) { }
 
   @Post()
-  create(@Body() customer: CreateCustomerDto): Promise<Customer> {
+  create(@Body() customer: CreateCustomerDto) {
     return this.customerService.create(customer);
   }
 
   @Get()
   // @UseGuards(new CheckToken())
-  findAll(@Query('page') page: number=1, @Query('limit') limit: number=10) {
+  findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
     return this.customerService.find(page, limit);
   }
 

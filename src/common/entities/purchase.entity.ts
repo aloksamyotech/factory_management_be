@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -12,11 +13,21 @@ import {
 } from 'typeorm';
 import { Vendor } from './vendor.entity';
 import { PurchaseItems } from './purchaseItems.entity';
+import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 
 @Entity('purchases')
 export class Purchase {
   @PrimaryGeneratedColumn()
   id: number;
+
+  // @Column({ unique: true })
+  // orderId: string;
+
+  // @BeforeInsert()
+  // generateOrderId() {
+  //   this.orderId = 'ORD-' + nanoid(6).toUpperCase(); // 6-char ID like ORD-X8Z91P
+  // }
 
   @ManyToOne(() => Vendor)
   @JoinColumn()

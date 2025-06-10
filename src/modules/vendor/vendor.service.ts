@@ -29,6 +29,10 @@ export class VendorService {
     });
     return data
   }
+  async getAll() {
+    const data = await this.vendorRepository.find()
+    return data
+  }
 
   findOne(id: number): Promise<Vendor | null> {
     return this.vendorRepository.findOne({ where: { id } });

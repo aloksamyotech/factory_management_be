@@ -27,6 +27,11 @@ export class VendorController {
     return this.vendorService.findAll(page, limit);
   }
 
+  @Get('/list')
+  getAll() {
+    return this.vendorService.getAll();
+  }
+  
   @Get(':id')
   findOne(@Param('id') id: number): Promise<Vendor | null> {
     return this.vendorService.findOne(id);

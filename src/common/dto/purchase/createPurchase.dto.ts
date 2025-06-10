@@ -9,10 +9,10 @@ import {
 
 class ProductDto {
   @IsInt()
-  pId: number;
+  productId: number;
 
   @IsInt()
-  qty: number;
+  quantity: number;
 }
 
 export class CreatePurchaseDto {
