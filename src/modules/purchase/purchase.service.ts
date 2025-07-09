@@ -55,8 +55,13 @@ export class PurchaseService {
     return savePurchase;
   }
 
-  async findAll(page: number, limit: number) {
+  async findAll(page: number, limit: number,vendorId:any) {
     const data = await this.purchaseRepository.findAndCount({
+      where: {
+        vendorId: {
+          id: vendorId
+        },
+      },
       skip: (page - 1) * limit,
       take: limit,
       order: {
@@ -70,7 +75,7 @@ export class PurchaseService {
   findOne(id: number): Promise<Purchase | null> {
     return this.purchaseRepository.findOne({
       where: { id },
-      relations: ['itemId', 'vendorId'],
+      relations: ['itemId', 'vendorId','itemId.rawMaterial'],
     });
   }
 

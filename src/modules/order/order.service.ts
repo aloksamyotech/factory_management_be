@@ -24,7 +24,7 @@ export class OrderService {
     private productRepository: Repository<Product>,
     @InjectRepository(OrderItems)
     private orderItemQtyRepository: Repository<OrderItems>,
-  ) {}
+  ) { }
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     const { customerId, productId, totalAmount, expectedDeliveryDate } =
@@ -47,7 +47,7 @@ export class OrderService {
 
     productId.map(async (item) => {
       const product = await this.productRepository.findOne({
-        where: { id: item.pId },
+        where: { id: item.productId },
       });
       if (!product) {
         return new Error('item not found');
@@ -55,7 +55,7 @@ export class OrderService {
       const newOrder = this.orderItemQtyRepository.create({
         order: saveOrder,
         productId: product,
-        quantity: item.qty,
+        quantity: item.quantity,
       });
       const saved = await this.orderItemQtyRepository.save(newOrder);
       return saved;
@@ -65,7 +65,7 @@ export class OrderService {
 
   findAll(): Promise<Order[]> {
     return this.orderRepository.find({
-      relations: ['itemId', 'customerId'],
+      relations: ['itemId','itemId.productId','customerId'],
     });
   }
 
