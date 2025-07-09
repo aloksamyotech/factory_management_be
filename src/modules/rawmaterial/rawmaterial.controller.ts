@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CreateRawMaterialDto } from 'src/common/dto/rawMaterial/createRaw.dto';
 import { UpdateRawMaterialDto } from 'src/common/dto/rawMaterial/updateRaw.dto';
@@ -14,18 +15,23 @@ import { RawMaterialService } from './rawmaterial.service';
 
 @Controller('rawmaterial')
 export class RawMaterialController {
-  constructor(private readonly rawMaterialService: RawMaterialService) {}
+  constructor(private readonly rawMaterialService: RawMaterialService) { }
 
   @Post()
   async create(
     @Body() createRawMaterialDto: CreateRawMaterialDto,
-  ): Promise<RawMaterial> {
+  ) {
     return this.rawMaterialService.create(createRawMaterialDto);
   }
 
   @Get()
-  async findAll(): Promise<RawMaterial[]> {
-    return this.rawMaterialService.findAll();
+  async findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+    return this.rawMaterialService.findAll(page, limit);
+  }
+
+  @Get('/list')
+  getAll() {
+    return this.rawMaterialService.getAll();
   }
 
   @Get(':id')

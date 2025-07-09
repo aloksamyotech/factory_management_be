@@ -29,7 +29,7 @@ export class Vendor {
   phoneNumber: string;
 
   @IsString()
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   address: string;
 
   @CreateDateColumn()

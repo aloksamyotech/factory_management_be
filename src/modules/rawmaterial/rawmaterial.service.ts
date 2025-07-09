@@ -14,11 +14,11 @@ export class RawMaterialService {
 
     @InjectRepository(Inventory)
     private inventoryRepository: Repository<Inventory>,
-  ) {}
+  ) { }
 
   async create(
     createRawMaterialDto: CreateRawMaterialDto,
-  ): Promise<RawMaterial> {
+  ) {
     const rawMaterial = this.rawMaterialRepository.create(createRawMaterialDto);
     const saveMaterial = await this.rawMaterialRepository.save(rawMaterial);
 
@@ -26,12 +26,25 @@ export class RawMaterialService {
       rawMaterialId: saveMaterial,
       type: 'rawMaterial',
     });
+
     await this.inventoryRepository.save(inventoryItem);
     return saveMaterial;
   }
 
-  findAll(): Promise<RawMaterial[]> {
-    return this.rawMaterialRepository.find();
+  async findAll(page: number, limit: number) {
+    const data = await this.rawMaterialRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC'
+      }
+    })
+    return data
+  }
+
+  async getAll() {
+    const data = await this.rawMaterialRepository.find()
+    return data
   }
 
   findOne(id: number): Promise<RawMaterial | null> {

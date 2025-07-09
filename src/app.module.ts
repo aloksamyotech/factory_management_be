@@ -10,6 +10,7 @@ import { MachineModule } from './modules/machine/machine.module';
 import { ProductModule } from './modules/product/product.module';
 import { VendorModule } from './modules/vendor/vendor.module';
 import { RawmaterialModule } from './modules/rawmaterial/rawmaterial.module';
+import { InventoryModule } from './modules/inventory/inventory.module';
 import { PurchaseModule } from './modules/purchase/purchase.module';
 import { OrderModule } from './modules/order/order.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
@@ -28,6 +29,7 @@ import { ConfigModule } from '@nestjs/config';
     RawmaterialModule,
     PurchaseModule,
     OrderModule,
+    InventoryModule
   ],
   controllers: [AppController],
   providers: [AppService],

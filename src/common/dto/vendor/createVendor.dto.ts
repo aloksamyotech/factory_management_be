@@ -21,6 +21,7 @@ export class CreateVendorDto {
   @IsString()
   phoneNumber: string;
 
+  @IsOptional()
   @IsString()
   address: string;
 }

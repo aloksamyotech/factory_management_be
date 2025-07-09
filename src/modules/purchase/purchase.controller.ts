@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { PurchaseService } from './purchase.service';
 import { Purchase } from 'src/common/entities/purchase.entity';
@@ -14,7 +15,7 @@ import { CreatePurchaseDto } from 'src/common/dto/purchase/createPurchase.dto';
 
 @Controller('purchase')
 export class PurchaseController {
-  constructor(private readonly purchaseService: PurchaseService) {}
+  constructor(private readonly purchaseService: PurchaseService) { }
 
   @Post()
   create(@Body() createPurchaseDto: CreatePurchaseDto) {
@@ -22,8 +23,8 @@ export class PurchaseController {
   }
 
   @Get()
-  findAll(): Promise<Purchase[]> {
-    return this.purchaseService.findAll();
+  findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10, @Query('vendorId') vendorId:any) {
+    return this.purchaseService.findAll(page, limit,vendorId);
   }
 
   @Get(':id')

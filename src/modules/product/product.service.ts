@@ -18,7 +18,7 @@ export class ProductService {
 
     @InjectRepository(Inventory)
     private inventoryRepository: Repository<Inventory>,
-  ) {}
+  ) { }
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const { name, category, price, description, rawMaterial } =
@@ -45,10 +45,16 @@ export class ProductService {
     return saveProduct;
   }
 
-  findAll(): Promise<Product[]> {
-    return this.productRepository.find({
+  async findAll(page: number, limit: number) {
+    const data = await this.productRepository.findAndCount({
       relations: ['rawMaterial'],
-    });
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC'
+      }
+    })
+    return data
   }
 
   findOne(id: number): Promise<Product | null> {
