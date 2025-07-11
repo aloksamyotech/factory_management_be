@@ -15,23 +15,17 @@ export class Production {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Machine)
-  machineId: Machine;
-
-  @ManyToOne(() => Employee)
-  employeeId: Employee;
+  @ManyToOne(() => Machine,{nullable:true})
+  machine: Machine;
 
   @ManyToOne(() => Product)
-  productId: Product;
-
-  @Column()
-  startTime: Date;
-
-  @Column()
-  endTime: Date;
+  product: Product;
 
   @Column()
   quantity: number;
+
+  @Column()
+  estimationTime: Date;
 
   @Column()
   status: string;
