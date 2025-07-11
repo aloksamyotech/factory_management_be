@@ -19,15 +19,22 @@ export class MachineService {
 
     @InjectRepository(Employee)
     private employeeRepository: Repository<Employee>,
-  ) {}
+  ) { }
 
   create(machine: CreateMachineDto): Promise<Machine> {
     const newMachine = this.machineRepository.create(machine);
     return this.machineRepository.save(newMachine);
   }
 
-  find(): Promise<Machine[]> {
-    return this.machineRepository.find();
+  async find(page: number, limit: number) {
+    const data = await this.machineRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC'
+      }
+    });
+    return data
   }
 
   findOne(id: number): Promise<Machine | null> {

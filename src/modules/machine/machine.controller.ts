@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { Machine } from 'src/common/entities/machine.entity';
 import { MachineService } from './machine.service';
 import { Maintenance } from 'src/common/entities/machineMaintainance.entity';
@@ -11,8 +11,8 @@ export class MachineController {
   constructor(private readonly machineService: MachineService) {}
 
   @Get()
-  findAll(): Promise<Machine[]> {
-    return this.machineService.find();
+  findAll(@Query('page') page:number=1, @Query('limit') limit:number=10) {
+    return this.machineService.find(page,limit);
   }
 
   @Get('/maintenance')
