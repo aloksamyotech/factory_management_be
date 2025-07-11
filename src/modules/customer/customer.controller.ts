@@ -16,7 +16,7 @@ import { CheckToken } from 'src/common/guard/checkToken.guard';
 
 @Controller('customer')
 export class CustomerController {
-  constructor(private readonly customerService: CustomerService) { }
+  constructor(private readonly customerService: CustomerService) {}
 
   @Post()
   create(@Body() customer: CreateCustomerDto) {

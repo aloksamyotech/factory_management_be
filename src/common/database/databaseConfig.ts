@@ -1,7 +1,6 @@
-import { User } from '../entities/user.entity';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-
 import * as dotenv from 'dotenv';
+import { User } from '../entities/user.entity';
 import { Employee } from '../entities/employee.entity';
 import { Customer } from '../entities/customer.entity';
 import { Machine } from '../entities/machine.entity';

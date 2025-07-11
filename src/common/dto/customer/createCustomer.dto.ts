@@ -16,4 +16,5 @@ export class CreateCustomerDto {
 
   @IsOptional()
   address: string
+  email: string;
 }

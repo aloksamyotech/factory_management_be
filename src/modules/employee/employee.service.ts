@@ -1,10 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Message } from 'src/common/constant/constant';
-import { CreateEmployeeDto } from 'src/common/dto/employee/createEmp.dto';
-import { updateEmployeeDto } from 'src/common/dto/employee/updateEmp.dto';
-import { Employee } from 'src/common/entities/employee.entity';
-import { Repository } from 'typeorm';
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Message } from "src/common/constant/constant";
+import { CreateEmployeeDto } from "src/common/dto/employee/createEmp.dto";
+import { updateEmployeeDto } from "src/common/dto/employee/updateEmp.dto";
+import { Employee } from "src/common/entities/employee.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class EmployeeService {
@@ -48,8 +48,15 @@ export class EmployeeService {
     return this.employeeRepository.save(newEmployee);
   }
 
-  find(): Promise<Employee[]> {
-    return this.employeeRepository.find();
+  async find(page: number, limit: number) {
+    const data = await this.employeeRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: "ASC",
+      },
+    });
+    return data;
   }
 
   findOne(id: number): Promise<Employee | null> {

@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,7 +13,7 @@ import { RawmaterialModule } from './modules/rawmaterial/rawmaterial.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { PurchaseModule } from './modules/purchase/purchase.module';
 import { OrderModule } from './modules/order/order.module';
-import { LoggerMiddleware } from './common/middleware/logger.middleware';
+// import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({

@@ -1,6 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
 import { CreateCustomerDto } from 'src/common/dto/customer/createCustomer.dto';
 import { UpdateCustomerDto } from 'src/common/dto/customer/updateCustomer.dto';
 import { Customer } from 'src/common/entities/customer.entity';
@@ -11,11 +11,11 @@ export class CustomerService {
   constructor(
     @InjectRepository(Customer)
     private customerRepository: Repository<Customer>,
-  ) { }
+  ) {}
 
   create(customer: CreateCustomerDto) {
     const data = this.customerRepository.create(customer);
-    const newCustomer = this.customerRepository.save(data)
+    const newCustomer = this.customerRepository.save(data);
     return newCustomer;
   }
 
@@ -24,10 +24,10 @@ export class CustomerService {
       skip: (page - 1) * limit,
       take: limit,
       order: {
-        createdAt: 'DESC'
-      }
+        createdAt: 'DESC',
+      },
     });
-    return data
+    return data;
   }
 
   findOne(id: number): Promise<Customer | null> {
