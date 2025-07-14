@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, Put } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Put, Query } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Employee } from 'src/common/entities/employee.entity';
 import { CreateEmployeeDto } from 'src/common/dto/employee/createEmp.dto';
@@ -6,7 +6,7 @@ import { updateEmployeeDto } from 'src/common/dto/employee/updateEmp.dto';
 
 @Controller('employee')
 export class EmployeeController {
-  constructor(private readonly employeeService: EmployeeService) {}
+  constructor(private readonly employeeService: EmployeeService) { }
 
   @Post()
   create(@Body() employee: CreateEmployeeDto): Promise<Employee> {
@@ -14,8 +14,8 @@ export class EmployeeController {
   }
 
   @Get()
-  findAll(): Promise<CreateEmployeeDto[]> {
-    return this.employeeService.find();
+  findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+    return this.employeeService.find(page, limit);
   }
 
   @Get(':id')

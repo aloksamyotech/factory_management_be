@@ -14,6 +14,7 @@ import { Inventory } from '../entities/inventory.entity';
 import { PurchaseItems } from '../entities/purchaseItems.entity';
 import { Order } from '../entities/order.entity';
 import { OrderItems } from '../entities/orderItems.entity';
+import { Production } from '../entities/production.entity';
 dotenv.config();
 
 export const databaseConfig: TypeOrmModuleOptions = {
@@ -37,6 +38,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
     PurchaseItems,
     Order,
     OrderItems,
+    Production
   ],
   synchronize: true,
 };

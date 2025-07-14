@@ -11,7 +11,7 @@ export class EmployeeService {
   constructor(
     @InjectRepository(Employee)
     private employeeRepository: Repository<Employee>,
-  ) {}
+  ) { }
 
   async create(employee: CreateEmployeeDto): Promise<Employee> {
     const mailExist = await this.employeeRepository.findOne({
@@ -48,8 +48,15 @@ export class EmployeeService {
     return this.employeeRepository.save(newEmployee);
   }
 
-  find(): Promise<Employee[]> {
-    return this.employeeRepository.find();
+  async find(page: number, limit: number) {
+    const data = await this.employeeRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: "DESC",
+      },
+    });
+    return data;
   }
 
   findOne(id: number): Promise<Employee | null> {
