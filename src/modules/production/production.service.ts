@@ -9,6 +9,7 @@ import { Maintenance } from 'src/common/entities/machineMaintainance.entity';
 import { Repository } from 'typeorm';
 import { CreateProductionDto } from 'src/common/dto/production/createProduction.dto';
 import { Product } from 'src/common/entities/product.entity';
+import { UpdateStatusDto } from 'src/common/dto/production/updateStatus.dto';
 
 @Injectable()
 export class ProductionService {
@@ -64,6 +65,10 @@ export class ProductionService {
         return data
     }
 
+    async updateStatus(id: number, dto: {status: string}){
+        await this.productionRepository.update(id, {status: dto.status});
+        return this.findOne(id);
+    }
     // async update(id: number, production: any) {
     //     await this.productionRepository.update(id, production);
     //     return
