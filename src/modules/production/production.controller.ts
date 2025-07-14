@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ProductionService } from './production.service';
 import { UpdateMachineDto } from 'src/common/dto/machine/updateMachine.dto';
+import { CreateProductionDto } from 'src/common/dto/production/createProduction.dto';
 
 @Controller('production')
 export class ProductionController {
@@ -17,7 +18,7 @@ export class ProductionController {
     }
 
     @Post()
-    create(@Body() production: any) {
+    create(@Body() production: CreateProductionDto) {
         return this.productionService.create(production);
     }
 

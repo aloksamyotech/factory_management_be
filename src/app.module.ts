@@ -15,6 +15,7 @@ import { PurchaseModule } from './modules/purchase/purchase.module';
 import { OrderModule } from './modules/order/order.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { ConfigModule } from '@nestjs/config';
+import { ProductionModule } from './modules/production/production.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { ConfigModule } from '@nestjs/config';
     RawmaterialModule,
     PurchaseModule,
     OrderModule,
-    InventoryModule
+    InventoryModule,
+    ProductionModule
   ],
   controllers: [AppController],
   providers: [AppService],

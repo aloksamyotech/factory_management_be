@@ -15,8 +15,8 @@ export class Production {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Machine,{nullable:true})
-  machine: Machine;
+  @ManyToOne(() => Machine, { nullable: true })
+  machine: Machine | null;
 
   @ManyToOne(() => Product)
   product: Product;
@@ -25,9 +25,9 @@ export class Production {
   quantity: number;
 
   @Column()
-  estimationTime: Date;
+  estimationTime: string;
 
-  @Column()
+  @Column({default:'pending'})
   status: string;
 
   @CreateDateColumn()

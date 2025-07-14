@@ -7,18 +7,44 @@ import { Production } from 'src/common/entities/production.entity';
 import { Machine } from 'src/common/entities/machine.entity';
 import { Maintenance } from 'src/common/entities/machineMaintainance.entity';
 import { Repository } from 'typeorm';
+import { CreateProductionDto } from 'src/common/dto/production/createProduction.dto';
+import { Product } from 'src/common/entities/product.entity';
 
 @Injectable()
 export class ProductionService {
     constructor(
         @InjectRepository(Production)
         private productionRepository: Repository<Production>,
+        @InjectRepository(Machine)
+        private machineRepository: Repository<Machine>,
+        @InjectRepository(Product)
+        private productRepository: Repository<Product>,
     ) { }
 
-    async create(production: any) {
-        const newProd = this.productionRepository.create(production);
-        const data = await this.productionRepository.save(newProd);
-        return data
+    async create(production: CreateProductionDto) {
+
+        const { machine, product, quantity, estimationTime, status } = production;
+
+        const machineData = machine ? await this.machineRepository.findOne({
+            where: { id: machine },
+        }) : null;
+
+        const productData = await this.productRepository.findOne({
+            where: { id: product },
+        });
+        if (!productData) {
+            throw new Error('Product not found');
+        }
+
+        const productionNew = this.productionRepository.create({
+            product: productData,
+            machine: machineData,
+            quantity,
+            estimationTime,
+            status
+        });
+        const saveData = await this.productionRepository.save(productionNew);
+        return saveData
     }
 
     async find(page: number, limit: number) {
@@ -27,7 +53,8 @@ export class ProductionService {
             take: limit,
             order: {
                 createdAt: 'DESC'
-            }
+            },
+            relations: ['product', 'machine'],
         });
         return data
     }
