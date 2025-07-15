@@ -21,9 +21,10 @@ export class MachineService {
     private employeeRepository: Repository<Employee>,
   ) { }
 
-  create(machine: CreateMachineDto): Promise<Machine> {
+  async create(machine: CreateMachineDto) {
     const newMachine = this.machineRepository.create(machine);
-    return this.machineRepository.save(newMachine);
+    const data = await this.machineRepository.save(newMachine);
+    return data
   }
 
   async find(page: number, limit: number) {
@@ -37,18 +38,18 @@ export class MachineService {
     return data
   }
 
-  findOne(id: number): Promise<Machine | null> {
-    return this.machineRepository.findOne({ where: { id } });
+  async findOne(id: number) {
+    const data = await this.machineRepository.findOne({ where: { id } });
+    return data
   }
 
-  update(id: number, machine: UpdateMachineDto): Promise<Machine | null> {
-    this.machineRepository.update(id, machine);
-    return this.machineRepository.findOne({ where: { id } });
+  async update(id: number, machine: UpdateMachineDto) {
+    await this.machineRepository.update(id, machine);
+    const data = await this.machineRepository.findOne({ where: { id } });
+    return data
   }
 
-  async maintenance(
-    createMaintenanceDto: CreateMaintenanceDto,
-  ): Promise<Maintenance> {
+  async maintenance(createMaintenanceDto: CreateMaintenanceDto) {
     const machine = await this.machineRepository.findOne({
       where: { id: createMaintenanceDto.machineId },
     });
@@ -64,27 +65,28 @@ export class MachineService {
       comment: createMaintenanceDto.comment,
       nextMaintenance: createMaintenanceDto.nextMaintenance,
     });
-    return this.maintenanceRepository.save(newMaintenance);
+    const data = await this.maintenanceRepository.save(newMaintenance);
+    return data
   }
 
-  findAllMaintenance(): Promise<Maintenance[]> {
-    return this.maintenanceRepository.find({
+  async findAllMaintenance() {
+    const data = await this.maintenanceRepository.find({
       relations: ['employeeId', 'machineId'],
     });
+    return data
   }
 
-  findMaintenanceById(id: number): Promise<Maintenance | null> {
-    return this.maintenanceRepository.findOne({
+  async findMaintenanceById(id: number) {
+    const data = await this.maintenanceRepository.findOne({
       relations: ['employeeId', 'machineId'],
       where: { id },
     });
+    return data
   }
 
-  updateMaintenance(
-    id: number,
-    maintenance: Maintenance,
-  ): Promise<Maintenance | null> {
-    this.maintenanceRepository.update(id, maintenance);
-    return this.maintenanceRepository.findOne({ where: { id } });
+  async updateMaintenance(id: number, maintenance: Maintenance) {
+    await this.maintenanceRepository.update(id, maintenance);
+    const data = await this.maintenanceRepository.findOne({ where: { id } });
+    return data
   }
 }

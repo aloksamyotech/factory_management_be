@@ -13,9 +13,9 @@ export class CustomerService {
     private customerRepository: Repository<Customer>,
   ) { }
 
-  create(customer: CreateCustomerDto) {
+  async create(customer: CreateCustomerDto) {
     const data = this.customerRepository.create(customer);
-    const newCustomer = this.customerRepository.save(data)
+    const newCustomer = await this.customerRepository.save(data)
     return newCustomer;
   }
 
@@ -30,12 +30,14 @@ export class CustomerService {
     return data
   }
 
-  findOne(id: number): Promise<Customer | null> {
-    return this.customerRepository.findOne({ where: { id } });
+  async findOne(id: number) {
+    const data = await this.customerRepository.findOne({ where: { id } });
+    return data
   }
 
-  update(id: number, customer: UpdateCustomerDto): Promise<Customer | null> {
-    this.customerRepository.update(id, customer);
-    return this.customerRepository.findOne({ where: { id } });
+  async update(id: number, customer: UpdateCustomerDto) {
+    await this.customerRepository.update(id, customer);
+    const data = await this.customerRepository.findOne({ where: { id } });
+    return data
   }
 }

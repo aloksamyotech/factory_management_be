@@ -13,7 +13,7 @@ import { Order } from 'src/common/entities/order.entity';
 
 @Controller('order')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService) { }
 
   @Post()
   create(@Body() createOrderDto: CreateOrderDto) {
@@ -21,12 +21,12 @@ export class OrderController {
   }
 
   @Get()
-  findAll(): Promise<Order[]> {
+  findAll() {
     return this.orderService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Order | null> {
+  findOne(@Param('id') id: number) {
     return this.orderService.findOne(id);
   }
 

@@ -12,9 +12,9 @@ export class VendorService {
     private vendorRepository: Repository<Vendor>,
   ) { }
 
-  create(createVendorDto: CreateVendorDto) {
+  async create(createVendorDto: CreateVendorDto) {
     const newVendor = this.vendorRepository.create(createVendorDto);
-    const data = this.vendorRepository.save(newVendor);
+    const data = await this.vendorRepository.save(newVendor);
     return data
   }
 
@@ -34,13 +34,15 @@ export class VendorService {
     return data
   }
 
-  findOne(id: number): Promise<Vendor | null> {
-    return this.vendorRepository.findOne({ where: { id } });
+  async findOne(id: number) {
+    const data = await this.vendorRepository.findOne({ where: { id } });
+    return data
   }
 
-  update(id: number, updateVendorDto: UpdateVendorDto): Promise<Vendor | null> {
-    this.vendorRepository.update(id, updateVendorDto);
-    return this.vendorRepository.findOne({ where: { id } });
+  async update(id: number, updateVendorDto: UpdateVendorDto) {
+    await this.vendorRepository.update(id, updateVendorDto);
+    const data = this.vendorRepository.findOne({ where: { id } });
+    return data
   }
 
   remove(id: number) {

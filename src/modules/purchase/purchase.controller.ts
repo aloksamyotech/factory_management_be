@@ -23,22 +23,14 @@ export class PurchaseController {
   }
 
   @Get()
-  findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10, @Query('vendorId') vendorId:any) {
-    return this.purchaseService.findAll(page, limit,vendorId);
+  findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10, @Query('vendorId') vendorId: any) {
+    return this.purchaseService.findAll(page, limit, vendorId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Purchase | null> {
+  findOne(@Param('id') id: number) {
     return this.purchaseService.findOne(id);
   }
-
-  // @Put(':id')
-  // update(
-  //   @Param('id') id: number,
-  //   @Body() updatePurchaseDto: UpdatePurchaseDto,
-  // ): Promise<Purchase | null> {
-  //   return this.purchaseService.update(id, updatePurchaseDto);
-  // }
 
   @Delete(':id')
   remove(@Param('id') id: number) {

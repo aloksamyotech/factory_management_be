@@ -13,7 +13,7 @@ export class EmployeeService {
     private employeeRepository: Repository<Employee>,
   ) { }
 
-  async create(employee: CreateEmployeeDto): Promise<Employee> {
+  async create(employee: CreateEmployeeDto) {
     const mailExist = await this.employeeRepository.findOne({
       where: { email: employee.email },
     });
@@ -44,8 +44,9 @@ export class EmployeeService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const newEmployee = this.employeeRepository.create(employee);
-    return this.employeeRepository.save(newEmployee);
+    const data = this.employeeRepository.create(employee);
+    const newEmployee = this.employeeRepository.save(data);
+    return newEmployee
   }
 
   async find(page: number, limit: number) {
@@ -59,12 +60,14 @@ export class EmployeeService {
     return data;
   }
 
-  findOne(id: number): Promise<Employee | null> {
-    return this.employeeRepository.findOne({ where: { id } });
+  findOne(id: number) {
+    const data = this.employeeRepository.findOne({ where: { id } });
+    return data
   }
 
-  update(id: number, employee: updateEmployeeDto): Promise<Employee | null> {
-    this.employeeRepository.update(id, employee);
-    return this.employeeRepository.findOne({ where: { id } });
+  update(id: number, employee: updateEmployeeDto) {
+    const updated = this.employeeRepository.update(id, employee);
+    const data = this.employeeRepository.findOne({ where: { id } });
+    return data
   }
 }
