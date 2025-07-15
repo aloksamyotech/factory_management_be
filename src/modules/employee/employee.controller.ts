@@ -9,7 +9,7 @@ export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) { }
 
   @Post()
-  create(@Body() employee: CreateEmployeeDto): Promise<Employee> {
+  create(@Body() employee: CreateEmployeeDto) {
     return this.employeeService.create(employee);
   }
 
@@ -19,7 +19,7 @@ export class EmployeeController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<CreateEmployeeDto | null> {
+  findOne(@Param('id') id: number) {
     return this.employeeService.findOne(id);
   }
 
@@ -27,7 +27,7 @@ export class EmployeeController {
   update(
     @Param('id') id: number,
     @Body() employee: updateEmployeeDto,
-  ): Promise<Employee | null> {
+  ) {
     return this.employeeService.update(id, employee);
   }
 }

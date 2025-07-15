@@ -26,7 +26,7 @@ export class OrderService {
     private orderItemQtyRepository: Repository<OrderItems>,
   ) { }
 
-  async create(createOrderDto: CreateOrderDto): Promise<Order> {
+  async create(createOrderDto: CreateOrderDto) {
     const { customerId, productId, totalAmount, expectedDeliveryDate } =
       createOrderDto;
 
@@ -63,17 +63,19 @@ export class OrderService {
     return saveOrder;
   }
 
-  findAll(): Promise<Order[]> {
-    return this.orderRepository.find({
-      relations: ['itemId','itemId.productId','customerId'],
+  async findAll() {
+    const data = await this.orderRepository.find({
+      relations: ['itemId', 'itemId.productId', 'customerId'],
     });
+    return data
   }
 
-  findOne(id: number): Promise<Order | null> {
-    return this.orderRepository.findOne({
+  async findOne(id: number) {
+    const data = await this.orderRepository.findOne({
       where: { id },
       relations: ['itemId', 'customerId'],
     });
+    return data
   }
 
   remove(id: number) {

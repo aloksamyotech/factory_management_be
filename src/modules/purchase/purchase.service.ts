@@ -21,9 +21,10 @@ export class PurchaseService {
     private purchaseItemQtyRepository: Repository<PurchaseItems>,
   ) { }
 
-  async create(createPurchaseDto: CreatePurchaseDto): Promise<Purchase> {
+  async create(createPurchaseDto: CreatePurchaseDto) {
     const { vendorId, productId, totalAmount, expectedDeliveryDate } =
       createPurchaseDto;
+
     const vendor = await this.vendorRepository.findOne({
       where: { id: vendorId },
     });
@@ -55,7 +56,7 @@ export class PurchaseService {
     return savePurchase;
   }
 
-  async findAll(page: number, limit: number,vendorId:any) {
+  async findAll(page: number, limit: number, vendorId: any) {
     const data = await this.purchaseRepository.findAndCount({
       where: {
         vendorId: {
@@ -72,44 +73,13 @@ export class PurchaseService {
     return data
   }
 
-  findOne(id: number): Promise<Purchase | null> {
-    return this.purchaseRepository.findOne({
+  findOne(id: number) {
+    const data = this.purchaseRepository.findOne({
       where: { id },
-      relations: ['itemId', 'vendorId','itemId.rawMaterial'],
+      relations: ['itemId', 'vendorId', 'itemId.rawMaterial'],
     });
+    return data
   }
-
-  // update function for update purchase(not  working)
-  // async update(id: number, updatePurchaseDto: UpdatePurchaseDto): Promise<Purchase | null> {
-  //   const { vendorId, productId, totalAmount, expectedDeliveryDate } =
-  //     updatePurchaseDto;
-
-  //   const vendor = await this.vendorRepository.findOne({
-  //     where: { id: vendorId },
-  //   });
-  //   if (!vendor) {
-  //     throw new Error('Vendor not found');
-  //   }
-
-  //   const products = await this.rawMaterialRepository.find({
-  //     where: { id: In(productId) },
-  //   });
-
-  //   if (products.length !== productId.length) {
-  //     throw new Error('Some products were not found');
-  //   }
-  //   this.purchaseRepository.update(id, {
-  //     vendorId: vendor,
-  //     productId: products,
-  //     totalAmount,
-  //     expectedDeliveryDate,
-  //   });
-
-  //   return this.purchaseRepository.findOne({
-  //     where: { id },
-  //     relations: ['productId', 'vendorId'],
-  //   });
-  // }
 
   remove(id: number) {
     this.purchaseRepository.delete(id);

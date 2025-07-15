@@ -65,13 +65,10 @@ export class ProductionService {
         return data
     }
 
-    async updateStatus(id: number, dto: {status: string}){
-        await this.productionRepository.update(id, {status: dto.status});
-        return this.findOne(id);
+    async updateStatus(id: number, dto: UpdateStatusDto) {
+        await this.productionRepository.update(id, { status: dto.status });
+        const data = await this.productRepository.findOne({ where: { id } });
+        return data
     }
-    // async update(id: number, production: any) {
-    //     await this.productionRepository.update(id, production);
-    //     return
-    // }
-
+    
 }

@@ -30,7 +30,7 @@ export class CustomerController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Customer | null> {
+  findOne(@Param('id') id: number) {
     return this.customerService.findOne(id);
   }
 
@@ -38,7 +38,7 @@ export class CustomerController {
   update(
     @Param('id') id: number,
     @Body() customer: UpdateCustomerDto,
-  ): Promise<Customer | null> {
+  ) {
     return this.customerService.update(id, customer);
   }
 }

@@ -47,16 +47,18 @@ export class RawMaterialService {
     return data
   }
 
-  findOne(id: number): Promise<RawMaterial | null> {
-    return this.rawMaterialRepository.findOne({ where: { id } });
+  async findOne(id: number): Promise<RawMaterial | null> {
+    const data = this.rawMaterialRepository.findOne({ where: { id } });
+    return data
   }
 
-  update(
+  async update(
     id: number,
     updateRawMaterialDto: UpdateRawMaterialDto,
-  ): Promise<RawMaterial | null> {
-    this.rawMaterialRepository.update(id, updateRawMaterialDto);
-    return this.rawMaterialRepository.findOne({ where: { id } });
+  ) {
+    await this.rawMaterialRepository.update(id, updateRawMaterialDto);
+    const data = this.rawMaterialRepository.findOne({ where: { id } });
+    return data
   }
 
   remove(id: number) {

@@ -57,16 +57,15 @@ export class ProductService {
     return data
   }
 
-  findOne(id: number): Promise<Product | null> {
-    return this.productRepository.findOne({ where: { id } });
+  async findOne(id: number) {
+    const data = await this.productRepository.findOne({ where: { id } });
+    return data
   }
 
-  update(
-    id: number,
-    updateProductDto: UpdateProductDto,
-  ): Promise<Product | null> {
-    this.productRepository.update(id, updateProductDto);
-    return this.productRepository.findOne({ where: { id } });
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    await this.productRepository.update(id, updateProductDto);
+    const data = await this.productRepository.findOne({ where: { id } });
+    return data
   }
 
   remove(id: number) {

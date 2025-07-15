@@ -8,37 +8,37 @@ import { CreateMaintenanceDto } from 'src/common/dto/maintenance/createMaintenan
 
 @Controller('machine')
 export class MachineController {
-  constructor(private readonly machineService: MachineService) {}
+  constructor(private readonly machineService: MachineService) { }
 
   @Get()
-  findAll(@Query('page') page:number=1, @Query('limit') limit:number=10) {
-    return this.machineService.find(page,limit);
+  findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+    return this.machineService.find(page, limit);
   }
 
   @Get('/maintenance')
-  findAllMaintenance(): Promise<Maintenance[]> {
+  findAllMaintenance() {
     return this.machineService.findAllMaintenance();
   } //define route before the dynamic route to prevent overwrite this route
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Machine | null> {
+  findOne(@Param('id') id: number) {
     return this.machineService.findOne(id);
   }
 
   @Get('/maintenance/:id')
-  findMaintenanceById(@Param('id') id: number): Promise<Maintenance | null> {
+  findMaintenanceById(@Param('id') id: number) {
     return this.machineService.findMaintenanceById(id);
   }
 
   @Post()
-  create(@Body() machine: CreateMachineDto): Promise<Machine> {
+  create(@Body() machine: CreateMachineDto) {
     return this.machineService.create(machine);
   }
 
   @Post('maintenance')
   addMaintenance(
     @Body() createMaintenanceDto: CreateMaintenanceDto,
-  ): Promise<Maintenance> {
+  ) {
     return this.machineService.maintenance(createMaintenanceDto);
   }
 
@@ -46,7 +46,7 @@ export class MachineController {
   update(
     @Param('id') id: number,
     @Body() machine: UpdateMachineDto,
-  ): Promise<Machine | null> {
+  ) {
     return this.machineService.update(id, machine);
   }
 
@@ -54,7 +54,7 @@ export class MachineController {
   updateMaintenance(
     @Param('id') id: number,
     @Body() maintenance: Maintenance,
-  ): Promise<Maintenance | null> {
+  ) {
     return this.machineService.updateMaintenance(id, maintenance);
   }
 }

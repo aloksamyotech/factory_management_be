@@ -15,7 +15,7 @@ export class UsersService {
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     const { name, email, password, phoneNumber } = createUserDto;
@@ -65,17 +65,20 @@ export class UsersService {
     };
   }
 
-  findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  async findAll() {
+    const data = await this.usersRepository.find();
+    return data
   }
 
-  findOne(id: number): Promise<User | null> {
-    return this.usersRepository.findOne({ where: { id } });
+  async findOne(id: number) {
+    const data = this.usersRepository.findOne({ where: { id } });
+    return data
   }
 
-  async update(id: number, user: Partial<User>): Promise<User | null> {
+  async update(id: number, user: Partial<User>) {
     await this.usersRepository.update(id, user);
-    return this.findOne(id);
+    const data = await this.usersRepository.findOne({ where: { id } });
+    return data
   }
 
   async remove(id: number): Promise<void> {

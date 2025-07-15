@@ -35,7 +35,7 @@ export class RawMaterialController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<RawMaterial | null> {
+  async findOne(@Param('id') id: number) {
     return this.rawMaterialService.findOne(id);
   }
 
@@ -43,12 +43,12 @@ export class RawMaterialController {
   async update(
     @Param('id') id: number,
     @Body() updateRawMaterialDto: UpdateRawMaterialDto,
-  ): Promise<RawMaterial | null> {
+  ) {
     return this.rawMaterialService.update(id, updateRawMaterialDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number): Promise<void> {
+  async remove(@Param('id') id: number) {
     return this.rawMaterialService.remove(id);
   }
 }
