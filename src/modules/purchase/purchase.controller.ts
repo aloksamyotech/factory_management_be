@@ -7,11 +7,13 @@ import {
   Delete,
   Put,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { PurchaseService } from './purchase.service';
 import { Purchase } from 'src/common/entities/purchase.entity';
 import { UpdatePurchaseDto } from 'src/common/dto/purchase/updatePurchase.dto';
 import { CreatePurchaseDto } from 'src/common/dto/purchase/createPurchase.dto';
+import { UpdateStatusDto } from 'src/common/dto/production/updateStatus.dto';
 
 @Controller('purchase')
 export class PurchaseController {
@@ -35,5 +37,10 @@ export class PurchaseController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.purchaseService.remove(id);
+  }
+
+  @Patch(':id')
+  updateStatus(@Param('id') id: number, @Body() updateStatusDto: UpdateStatusDto) {
+    return this.purchaseService.updateStatus(+id, updateStatusDto);
   }
 }

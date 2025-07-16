@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { CreateProductionDto } from 'src/common/dto/production/createProduction.dto';
 import { Product } from 'src/common/entities/product.entity';
 import { UpdateStatusDto } from 'src/common/dto/production/updateStatus.dto';
+import { Inventory } from 'src/common/entities/inventory.entity';
 
 @Injectable()
 export class ProductionService {
@@ -20,6 +21,8 @@ export class ProductionService {
         private machineRepository: Repository<Machine>,
         @InjectRepository(Product)
         private productRepository: Repository<Product>,
+        @InjectRepository(Inventory)
+        private inventoryRepository: Repository<Inventory>
     ) { }
 
     async create(production: CreateProductionDto) {
@@ -67,8 +70,20 @@ export class ProductionService {
 
     async updateStatus(id: number, dto: UpdateStatusDto) {
         await this.productionRepository.update(id, { status: dto.status });
-        const data = await this.productRepository.findOne({ where: { id } });
+
+        const data = await this.productionRepository.findOne({ where: { id }, relations: ['product'] });
+        if (!data) {
+            throw new Error('Production or product data not found');
+        }
+
+        if (dto.status === 'completed') {
+
+            const res = await this.inventoryRepository.findOne({ where: { productId: { id: data.product.id } }, relations: ['productId'] })
+            if (res) {
+                res.quantity += data.quantity;
+                await this.inventoryRepository.save(res);
+            }
+        }
         return data
     }
-    
 }
