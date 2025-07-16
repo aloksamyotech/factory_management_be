@@ -7,6 +7,8 @@ import { RawMaterial } from 'src/common/entities/rawMaterial.entity';
 import { Vendor } from 'src/common/entities/vendor.entity';
 import { UpdatePurchaseDto } from 'src/common/dto/purchase/updatePurchase.dto';
 import { PurchaseItems } from 'src/common/entities/purchaseItems.entity';
+import { UpdateStatusDto } from 'src/common/dto/production/updateStatus.dto';
+import { Inventory } from 'src/common/entities/inventory.entity';
 
 @Injectable()
 export class PurchaseService {
@@ -19,6 +21,8 @@ export class PurchaseService {
     private vendorRepository: Repository<Vendor>,
     @InjectRepository(PurchaseItems)
     private purchaseItemQtyRepository: Repository<PurchaseItems>,
+    @InjectRepository(Inventory)
+    private inventoryRepository: Repository<Inventory>,
   ) { }
 
   async create(createPurchaseDto: CreatePurchaseDto) {
@@ -84,4 +88,27 @@ export class PurchaseService {
   remove(id: number) {
     this.purchaseRepository.delete(id);
   }
+
+  async updateStatus(id: number, dto: UpdateStatusDto) {
+    await this.purchaseRepository.update(id, { status: dto.status });
+
+    const data = await this.purchaseRepository.findOne({ where: { id }, relations: ['itemId', 'itemId.rawMaterial'] });
+    if (!data) {
+      throw new Error('Purchase not found');
+    }
+
+    if (dto.status === 'completed') {
+
+      data.itemId.map(async (item, i) => {
+        const res = await this.inventoryRepository.findOne({ where: { rawMaterialId: { id: item.rawMaterial.id } }, relations: ['rawMaterialId'] })
+        if (res) {
+          res.quantity += item.quantity;
+          await this.inventoryRepository.save(res);
+        }
+      }
+      )
+    }
+    return data
+  }
+
 }
