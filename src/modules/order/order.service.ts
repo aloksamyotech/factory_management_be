@@ -63,8 +63,18 @@ export class OrderService {
     return saveOrder;
   }
 
-  async findAll() {
-    const data = await this.orderRepository.find({
+  async findAll(page: number, limit: number, customerId: any) {
+    const data = await this.orderRepository.findAndCount({
+      where: {
+        customerId: {
+          id: customerId
+        },
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC'
+      },
       relations: ['itemId', 'itemId.productId', 'customerId'],
     });
     return data
@@ -73,7 +83,7 @@ export class OrderService {
   async findOne(id: number) {
     const data = await this.orderRepository.findOne({
       where: { id },
-      relations: ['itemId', 'customerId'],
+      relations: ['itemId', 'customerId', 'itemId.productId'],
     });
     return data
   }
