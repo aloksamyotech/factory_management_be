@@ -12,6 +12,8 @@ import { CreateOrderDto } from 'src/common/dto/order/createOrder.dto';
 import { Customer } from 'src/common/entities/customer.entity';
 import { Product } from 'src/common/entities/product.entity';
 import { OrderItems } from 'src/common/entities/orderItems.entity';
+import { UpdateStatusDto } from 'src/common/dto/production/updateStatus.dto';
+import { Inventory } from 'src/common/entities/inventory.entity';
 
 @Injectable()
 export class OrderService {
@@ -24,6 +26,8 @@ export class OrderService {
     private productRepository: Repository<Product>,
     @InjectRepository(OrderItems)
     private orderItemQtyRepository: Repository<OrderItems>,
+    @InjectRepository(Inventory)
+    private inventoryRepository: Repository<Inventory>,
   ) { }
 
   async create(createOrderDto: CreateOrderDto) {
@@ -90,5 +94,24 @@ export class OrderService {
 
   remove(id: number) {
     this.orderRepository.delete(id);
+  }
+
+  async updateStatus(id: number, dto: UpdateStatusDto) {
+    await this.orderRepository.update(id, { status: dto.status });
+    const data = await this.orderRepository.findOne({ where: { id }, relations: ['itemId', 'itemId.productId'] });
+    if (!data) {
+      throw new Error('Order not found');
+    }
+    if (dto.status === 'completed') {
+      data.itemId.map(async (item, i) => {
+        const res = await this.inventoryRepository.findOne({ where: { productId: { id: item.productId.id } }, relations: ['productId'] })
+        if (res) {
+          res.quantity -= item.quantity;
+          await this.inventoryRepository.save(res);
+        }
+      }
+      )
+    }
+    return data
   }
 }
