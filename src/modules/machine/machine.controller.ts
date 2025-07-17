@@ -16,8 +16,8 @@ export class MachineController {
   }
 
   @Get('/maintenance')
-  findAllMaintenance() {
-    return this.machineService.findAllMaintenance();
+  findAllMaintenance(@Query('page') page: number = 1, @Query('limit') limit: number = 10, @Query('machineId') machineId: any) {
+    return this.machineService.findAllMaintenance(page, limit, machineId);
   } //define route before the dynamic route to prevent overwrite this route
 
   @Get(':id')

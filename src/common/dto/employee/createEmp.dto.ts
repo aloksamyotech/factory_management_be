@@ -16,7 +16,7 @@ export class CreateEmployeeDto {
   @IsString()
   lastName: string;
 
-  @IsEmail()
+  @IsString()
   email: string;
 
   @IsString()
@@ -25,7 +25,7 @@ export class CreateEmployeeDto {
   @IsOptional()
   @IsInt()
   @IsPositive()
-  salary: number;
+  salary?: number;
 
   @IsString()
   department: string;

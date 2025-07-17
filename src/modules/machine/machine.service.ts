@@ -69,8 +69,18 @@ export class MachineService {
     return data
   }
 
-  async findAllMaintenance() {
-    const data = await this.maintenanceRepository.find({
+  async findAllMaintenance(page: number, limit: number, machineId: any) {
+    const data = await this.maintenanceRepository.findAndCount({
+      where: {
+        machineId: {
+          id: machineId
+        },
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC'
+      },
       relations: ['employeeId', 'machineId'],
     });
     return data

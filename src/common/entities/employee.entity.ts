@@ -20,7 +20,7 @@ export class Employee {
   @Column({ type: 'varchar', nullable: true })
   lastName: string;
 
-  @IsEmail()
+  // @IsEmail()
   @Column({ type: 'varchar', unique: true })
   email: string;
 
