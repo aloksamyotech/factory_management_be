@@ -70,12 +70,12 @@ export class EmployeeService {
     return data;
   }
 
-  async login(loginDto: LoginDto, @Res({passthrough: true}) res: Response){
+  async login(loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
     const employee = await this.employeeRepository.findOne({
-      where: {email: loginDto.email},
+      where: { email: loginDto.email },
     })
 
-    if(!employee){
+    if (!employee) {
       throw new HttpException(
         {
           success: false,
@@ -90,7 +90,7 @@ export class EmployeeService {
 
     const isPasswordValid = await bcrypt.compare(loginDto.password, employee.password);
 
-    if(!isPasswordValid){
+    if (!isPasswordValid) {
       throw new HttpException(
         {
           success: false,
@@ -109,16 +109,13 @@ export class EmployeeService {
       name: employee.firstName,
     };
 
-    const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, {expiresIn: '1d'});
-
-    res.cookie('token', token, {httpOnly: true, maxAge: 24*60*60*1000, path: '/', sameSite: 'lax'});
-    const {password, ...employeeWithoutPassword} = employee;
+    const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '1d' });
+    res.cookie("token", token, {httpOnly:true, maxAge: 24 * 60 * 60 * 1000, path: '/', sameSite: 'lax'});
+    const { password, ...employeeWithoutPassword } = employee;
 
     return {
-      success: true,
-      message: 'Login Successful',
       token,
-      data: employeeWithoutPassword,
+      employeeWithoutPassword
     }
   }
 
