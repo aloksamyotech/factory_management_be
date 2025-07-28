@@ -21,7 +21,7 @@ async function bootstrap() {
     new ResponseInterceptor(),
   );
   app.enableCors({
-    origin: '139.59.19.212:4000',
+    origin: 'http://139.59.19.212:4000',
     credentials: true
   });
 
