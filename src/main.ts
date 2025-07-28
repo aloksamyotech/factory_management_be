@@ -20,7 +20,11 @@ async function bootstrap() {
     new LoggingInterceptor(),
     new ResponseInterceptor(),
   );
-  app.enableCors({origin: '*', credentials: true })
+  app.enableCors({
+    origin: '139.59.19.212:4000',
+    credentials: true
+  });
+
   const httpAdapterHost = app.get(HttpAdapterHost);
   app.useGlobalFilters(new GlobalExceptionHandler(httpAdapterHost));
   app.setGlobalPrefix('api/v1');
