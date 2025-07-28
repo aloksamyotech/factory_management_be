@@ -20,6 +20,8 @@ export class Employee {
   @Column({ type: 'varchar', nullable: true })
   lastName: string;
 
+  @Column()
+  password: string;
   // @IsEmail()
   @Column({ type: 'varchar', unique: true })
   email: string;

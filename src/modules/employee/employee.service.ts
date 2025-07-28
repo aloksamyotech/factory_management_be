@@ -5,6 +5,11 @@ import { CreateEmployeeDto } from 'src/common/dto/employee/createEmp.dto';
 import { updateEmployeeDto } from 'src/common/dto/employee/updateEmp.dto';
 import { Employee } from 'src/common/entities/employee.entity';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
+import { LoginDto } from 'src/common/dto/employee/login.dto';
+import { Response } from 'express';
+import { Res } from '@nestjs/common';
 
 @Injectable()
 export class EmployeeService {
@@ -44,6 +49,11 @@ export class EmployeeService {
         HttpStatus.BAD_REQUEST,
       );
     }
+
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(employee.password, salt);
+    employee.password = hashedPassword;
+
     const data = this.employeeRepository.create(employee);
     const newEmployee = this.employeeRepository.save(data);
     return newEmployee
@@ -58,6 +68,55 @@ export class EmployeeService {
       },
     });
     return data;
+  }
+
+  async login(loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
+    const employee = await this.employeeRepository.findOne({
+      where: { email: loginDto.email },
+    })
+
+    if (!employee) {
+      throw new HttpException(
+        {
+          success: false,
+          status: HttpStatus.UNAUTHORIZED,
+          message: 'Invalid Credentials',
+          timestamp: new Date().toISOString(),
+          data: [],
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    const isPasswordValid = await bcrypt.compare(loginDto.password, employee.password);
+
+    if (!isPasswordValid) {
+      throw new HttpException(
+        {
+          success: false,
+          status: HttpStatus.UNAUTHORIZED,
+          message: 'Invalid Credentials',
+          timestamp: new Date().toISOString(),
+          data: [],
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    const payload = {
+      id: employee.id,
+      email: employee.email,
+      name: employee.firstName,
+    };
+
+    const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '1d' });
+    res.cookie("token", token, {httpOnly:true, maxAge: 24 * 60 * 60 * 1000, path: '/', sameSite: 'lax'});
+    const { password, ...employeeWithoutPassword } = employee;
+
+    return {
+      token,
+      employeeWithoutPassword
+    }
   }
 
   findOne(id: number) {
