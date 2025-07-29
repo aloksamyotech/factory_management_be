@@ -110,7 +110,8 @@ export class EmployeeService {
     };
 
     const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '1d' });
-    res.cookie("token", token, {httpOnly:true, maxAge: 24 * 60 * 60 * 1000, path: '/', sameSite: 'lax'});
+    res.setHeader("Set-Cookie", `token=${token}; HttpOnly; Path=/; Max-Age=3600; SameSite=Strict`);
+
     const { password, ...employeeWithoutPassword } = employee;
 
     return {
