@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { HttpException,HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateMachineDto } from 'src/common/dto/machine/createmachine.dto';
