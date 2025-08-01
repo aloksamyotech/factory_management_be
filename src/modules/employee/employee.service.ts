@@ -106,11 +106,12 @@ export class EmployeeService {
     const payload = {
       id: employee.id,
       email: employee.email,
-      name: employee.firstName,
+      name: `${employee.firstName} ${employee.lastName}`,
+      department: employee.department,
     };
 
     const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '1d' });
-    res.setHeader("Set-Cookie", `token=${token}; HttpOnly; Path=/; Max-Age=3600; SameSite=Strict`);
+    res.setHeader("Set-Cookie", `token=${token}; HttpOnly; Path=/; Max-Age=60*60*12; SameSite=Strict`);
 
     const { password, ...employeeWithoutPassword } = employee;
 
