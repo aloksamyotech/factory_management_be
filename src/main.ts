@@ -21,7 +21,7 @@ async function bootstrap() {
     new ResponseInterceptor(),
   );
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://139.59.19.212:4000'],
+    origin: ['http://localhost:3000', 'http://139.59.19.212:4000', 'http://159.89.170.59', 'http://159.89.170.59:3000', 'http://factory.samyotech.in', 'https://factory.samyotech.in', 'factory.samyotech.in'],
     credentials: true
   });
 
