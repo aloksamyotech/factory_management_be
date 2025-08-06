@@ -104,10 +104,10 @@ export class EmployeeService {
     }
 
     const payload = {
-      id: employee.id,
-      email: employee.email,
-      name: `${employee.firstName} ${employee.lastName}`,
-      department: employee.department,
+      id: employee?.id,
+      email: employee?.email,
+      name: `${employee?.firstName} ${employee?.lastName ? employee?.lastName : ''}`,
+      department: employee?.department,
     };
 
     const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '1d' });

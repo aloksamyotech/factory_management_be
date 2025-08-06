@@ -28,6 +28,11 @@ export class OrderController {
     return this.orderService.findAll(page, limit, customerId);
   }
 
+  @Get('report')
+  getProductionReport(@Query('start') start:string, @Query('end') end:string){
+    return this.orderService.getBetweenDate(start, end);
+  }
+  
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.orderService.findOne(id);

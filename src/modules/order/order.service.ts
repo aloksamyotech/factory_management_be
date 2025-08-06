@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, In, Repository } from 'typeorm';
+import { Between, DeepPartial, In, Repository } from 'typeorm';
 import { Purchase } from 'src/common/entities/purchase.entity';
 import { CreatePurchaseDto } from 'src/common/dto/purchase/createPurchase.dto';
 import { RawMaterial } from 'src/common/entities/rawMaterial.entity';
@@ -84,6 +84,14 @@ export class OrderService {
     return data
   }
 
+  async getBetweenDate(start:string,end:string){
+    const data = await this.orderRepository.findAndCount({
+        where: {createdAt: Between(new Date(start), new Date(end))},
+        relations: ['itemId','customerId','itemId.productId'],
+        order:{createdAt: 'DESC'}
+    });
+      return data;
+  }
   async findOne(id: number) {
     const data = await this.orderRepository.findOne({
       where: { id },
