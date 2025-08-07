@@ -18,7 +18,7 @@ export class CreateEmployeeDto {
 
   @IsString()
   password: string;
-  
+
   @IsString()
   email: string;
 
@@ -33,6 +33,7 @@ export class CreateEmployeeDto {
   @IsString()
   department: string;
 
+  @IsOptional()
   @IsDate()
   @Transform(({ value }) => new Date(value))
   dateOfJoining: Date;
