@@ -37,7 +37,7 @@ export class Employee {
   @Column({ type: 'varchar', nullable: true })
   department: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ nullable: true })
   dateOfJoining: Date;
 
   @CreateDateColumn()
