@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException,HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateMachineDto } from 'src/common/dto/machine/createmachine.dto';
 import { UpdateMachineDto } from 'src/common/dto/machine/updateMachine.dto';
@@ -11,6 +11,7 @@ import { CreateProductionDto } from 'src/common/dto/production/createProduction.
 import { Product } from 'src/common/entities/product.entity';
 import { UpdateStatusDto } from 'src/common/dto/production/updateStatus.dto';
 import { Inventory } from 'src/common/entities/inventory.entity';
+import { RawMaterial } from 'src/common/entities/rawMaterial.entity';
 
 @Injectable()
 export class ProductionService {
@@ -27,7 +28,7 @@ export class ProductionService {
 
     async create(production: CreateProductionDto) {
 
-        const { machine, product, quantity, estimationTime, status } = production;
+        const { machine, product, quantity, estimationTime, status, items } = production;
 
         const machineData = machine ? await this.machineRepository.findOne({
             where: { id: machine },
@@ -39,6 +40,29 @@ export class ProductionService {
         if (!productData) {
             throw new Error('Product not found');
         }
+        if(items){
+        for(const item of items){
+            const inventory = await this.inventoryRepository.findOne({ where: { rawMaterialId: {id : item.rawMaterialId} },relations:['rawMaterialId']
+            });
+            
+            if(!inventory){
+                 throw new HttpException(
+                    {
+                        success: false,
+                        status: HttpStatus.BAD_REQUEST,
+                        message: `Raw Material not found in inventory`,
+                        timestamp: new Date().toISOString(),
+                        data: []
+                    },
+                    HttpStatus.BAD_REQUEST
+                )
+            }
+            if(item.quantity){
+                inventory.quantity -= item?.quantity 
+            }
+            await this.inventoryRepository.save(inventory);
+        }   
+    }
 
         const productionNew = this.productionRepository.create({
             product: productData,

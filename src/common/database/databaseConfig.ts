@@ -19,11 +19,12 @@ dotenv.config();
 
 export const databaseConfig: TypeOrmModuleOptions = {
   type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: 'FMS',
+  // host: 'localhost',
+  // port: 5432,
+  // username: process.env.DB_USERNAME,
+  // password: process.env.DB_PASSWORD,
+  // database: 'FMS',
+  url:process.env.NEON_DB,
   entities: [
     User,
     Employee,
