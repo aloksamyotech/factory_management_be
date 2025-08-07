@@ -13,6 +13,11 @@ export class ProductionController {
         return this.productionService.find(page, limit);
     }
 
+    @Get('report')
+    getProductionReport(@Query('start') start:string, @Query('end') end:string){
+        return this.productionService.getBetweenDate(start, end);
+    }
+
     @Get(':id')
     findOne(@Param('id') id: number) {
         return this.productionService.findOne(id);

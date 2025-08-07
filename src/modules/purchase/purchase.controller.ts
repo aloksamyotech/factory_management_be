@@ -29,6 +29,11 @@ export class PurchaseController {
     return this.purchaseService.findAll(page, limit, vendorId);
   }
 
+  @Get('report')
+  getProductionReport(@Query('start') start:string, @Query('end') end:string){
+    return this.purchaseService.getBetweenDate(start, end);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.purchaseService.findOne(id);

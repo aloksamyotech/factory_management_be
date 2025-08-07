@@ -6,7 +6,7 @@ import { CreateMaintenanceDto } from 'src/common/dto/maintenance/createMaintenan
 import { Production } from 'src/common/entities/production.entity';
 import { Machine } from 'src/common/entities/machine.entity';
 import { Maintenance } from 'src/common/entities/machineMaintainance.entity';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { CreateProductionDto } from 'src/common/dto/production/createProduction.dto';
 import { Product } from 'src/common/entities/product.entity';
 import { UpdateStatusDto } from 'src/common/dto/production/updateStatus.dto';
@@ -87,6 +87,14 @@ export class ProductionService {
         return data
     }
 
+    async getBetweenDate(start:string,end:string){
+        const data = await this.productionRepository.findAndCount({
+            where: {createdAt: Between(new Date(start), new Date(end))},
+            relations: ['product','machine'],
+            order:{createdAt: 'DESC'}
+        });
+        return data;
+    }
     async findOne(id: number) {
         const data = await this.productionRepository.findOne({ where: { id } });
         return data
