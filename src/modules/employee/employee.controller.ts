@@ -83,7 +83,7 @@ export class EmployeeController {
 
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('token', { path: '/' });
+    res.clearCookie('9x4kz5t7e2m1lqf', { path: '/' });
     return { message: 'Logged out' };
   }
 }
