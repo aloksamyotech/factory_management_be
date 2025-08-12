@@ -3,17 +3,18 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Machine } from './machine.entity';
 import { Product } from './product.entity';
-import { Employee } from './employee.entity';
 
 @Entity('production')
 export class Production {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  @PrimaryColumn({ type: 'varchar', length: 20, unique: true })
+  id: string;
 
   @ManyToOne(() => Machine, { nullable: true })
   machine: Machine | null;

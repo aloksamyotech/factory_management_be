@@ -6,6 +6,7 @@ import { UpdateProductDto } from 'src/common/dto/product/updateProduct.dto';
 import { CreateProductDto } from 'src/common/dto/product/createProduct.dto';
 import { RawMaterial } from 'src/common/entities/rawMaterial.entity';
 import { Inventory } from 'src/common/entities/inventory.entity';
+import { randomIDGenerator } from 'src/common/common/IdGen';
 
 @Injectable()
 export class ProductService {
@@ -27,7 +28,14 @@ export class ProductService {
     const raw = await this.rawMaterialRepository.find({
       where: { id: In(rawMaterial ?? []) },
     });
+    let findId:any;
+    let generatedID:string;
+    do{
+      generatedID = randomIDGenerator("PR",6)
+      findId = await this.productRepository.findOne({where:{id:generatedID}});
+    }while(findId);
     const product = this.productRepository.create({
+      id:generatedID,
       name,
       category,
       price,
@@ -57,18 +65,18 @@ export class ProductService {
     return data
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const data = await this.productRepository.findOne({ where: { id } });
     return data
   }
 
-  async update(id: number, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateProductDto: UpdateProductDto) {
     await this.productRepository.update(id, updateProductDto);
     const data = await this.productRepository.findOne({ where: { id } });
     return data
   }
 
-  remove(id: number) {
+  remove(id: string) {
     this.productRepository.delete(id);
   }
 }

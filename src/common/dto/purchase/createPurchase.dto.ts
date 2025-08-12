@@ -5,19 +5,20 @@ import {
   IsDateString,
   IsInstance,
   ValidateNested,
+  IsString,
 } from 'class-validator';
 
 class ProductDto {
-  @IsInt()
-  productId: number;
+  @IsString()
+  productId: string;
 
   @IsInt()
   quantity: number;
 }
 
 export class CreatePurchaseDto {
-  @IsInt()
-  vendorId: number;
+  @IsString()
+  vendorId: string;
 
   @IsArray()
   @ValidateNested({ each: true })

@@ -2,19 +2,18 @@ import { Transform } from 'class-transformer';
 import {
   IsString,
   IsOptional,
-  IsInt,
   IsDate,
   IsNotEmpty,
 } from 'class-validator';
 
 export class CreateMaintenanceDto {
-  @IsInt()
+  @IsString()
   @IsNotEmpty()
-  machineId: number;
+  machineId: string;
 
-  @IsInt()
+  @IsString()
   @IsNotEmpty()
-  employeeId: number;
+  employeeId: string;
 
   @IsString()
   comment: string;

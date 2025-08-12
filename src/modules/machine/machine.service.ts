@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { randomIDGenerator } from 'src/common/common/IdGen';
 import { CreateMachineDto } from 'src/common/dto/machine/createmachine.dto';
 import { UpdateMachineDto } from 'src/common/dto/machine/updateMachine.dto';
 import { CreateMaintenanceDto } from 'src/common/dto/maintenance/createMaintenance.dto';
@@ -23,6 +24,13 @@ export class MachineService {
 
   async create(machine: CreateMachineDto) {
     const newMachine = this.machineRepository.create(machine);
+        let findId:any;
+        let generatedID:string;
+        do {
+          generatedID = randomIDGenerator("MAC",6);
+          findId = await this.machineRepository.findOne({where:{id:generatedID}});
+        }while(findId);
+        newMachine.id = generatedID;
     const data = await this.machineRepository.save(newMachine);
     return data
   }
@@ -38,12 +46,12 @@ export class MachineService {
     return data
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const data = await this.machineRepository.findOne({ where: { id } });
     return data
   }
 
-  async update(id: number, machine: UpdateMachineDto) {
+  async update(id: string, machine: UpdateMachineDto) {
     await this.machineRepository.update(id, machine);
     const data = await this.machineRepository.findOne({ where: { id } });
     return data
@@ -59,7 +67,14 @@ export class MachineService {
     if (!employee || !machine) {
       throw new Error('not found');
     }
+    let findId:any;
+    let generatedID:string;
+    do {
+      generatedID = randomIDGenerator("MM",6);
+      findId = await this.machineRepository.findOne({where:{id:generatedID}});
+    }while(findId);
     const newMaintenance = this.maintenanceRepository.create({
+      id: generatedID,
       employeeId: employee,
       machineId: machine,
       comment: createMaintenanceDto.comment,
@@ -86,7 +101,7 @@ export class MachineService {
     return data
   }
 
-  async findMaintenanceById(id: number) {
+  async findMaintenanceById(id: string) {
     const data = await this.maintenanceRepository.findOne({
       relations: ['employeeId', 'machineId'],
       where: { id },
@@ -94,7 +109,7 @@ export class MachineService {
     return data
   }
 
-  async updateMaintenance(id: number, maintenance: Maintenance) {
+  async updateMaintenance(id: string, maintenance: Maintenance) {
     await this.maintenanceRepository.update(id, maintenance);
     const data = await this.maintenanceRepository.findOne({ where: { id } });
     return data

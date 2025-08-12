@@ -19,7 +19,7 @@ export class ProductionController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: number) {
+    findOne(@Param('id') id: string) {
         return this.productionService.findOne(id);
     }
 
@@ -29,8 +29,8 @@ export class ProductionController {
     }
 
     @Patch(':id')
-    updateStatus(@Param('id') id: number, @Body() updateStatusDto: UpdateStatusDto){
-        return this.productionService.updateStatus(+id, updateStatusDto);
+    updateStatus(@Param('id') id: string, @Body() updateStatusDto: UpdateStatusDto){
+        return this.productionService.updateStatus(id, updateStatusDto);
     }
     // @Put(':id')
     // update(

@@ -34,17 +34,17 @@ export class OrderController {
   }
   
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: string) {
     return this.orderService.findOne(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id') id: string) {
     return this.orderService.remove(id);
   }
 
   @Patch(':id')
-    updateStatus(@Param('id') id: number, @Body() updateStatusDto: UpdateStatusDto) {
-      return this.orderService.updateStatus(+id, updateStatusDto);
+    updateStatus(@Param('id') id: string, @Body() updateStatusDto: UpdateStatusDto) {
+      return this.orderService.updateStatus(id, updateStatusDto);
     }
 }

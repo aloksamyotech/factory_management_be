@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -13,8 +14,9 @@ import { OrderItems } from './orderItems.entity';
 
 @Entity('orders')
 export class Order {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  @PrimaryColumn({ type: 'varchar', length: 20, unique: true })
+  id: string;
 
   @ManyToOne(() => Customer)
   @JoinColumn()

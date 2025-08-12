@@ -11,6 +11,7 @@ import { LoginDto } from 'src/common/dto/employee/login.dto';
 import { Response } from 'express';
 import { Res } from '@nestjs/common';
 import { Image } from 'src/common/entities/image.entity';
+import { randomIDGenerator } from 'src/common/common/IdGen';
 
 @Injectable()
 export class EmployeeService {
@@ -58,6 +59,13 @@ export class EmployeeService {
     employee.password = hashedPassword;
 
     const data = this.employeeRepository.create(employee);
+    let findId: any;
+    let generatedID:string;
+    do{
+      generatedID = randomIDGenerator("EMP",6);
+      findId = await this.employeeRepository.findOne({where:{id:generatedID}});
+    }while(findId);
+      data.id = generatedID;
     const newEmployee = this.employeeRepository.save(data);
     return newEmployee
   }
@@ -144,12 +152,12 @@ export class EmployeeService {
     }
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     const data = this.employeeRepository.findOne({ where: { id } });
     return data
   }
 
-  update(id: number, employee: updateEmployeeDto) {
+  update(id: string, employee: updateEmployeeDto) {
     const updated = this.employeeRepository.update(id, employee);
     const data = this.employeeRepository.findOne({ where: { id } });
     return data
@@ -164,6 +172,7 @@ export class EmployeeService {
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash('12345678', salt);
       const defaultUser = this.employeeRepository.create({
+        id:"EMP00001",
         firstName: "neer",
         phoneNumber: "1234567890",
         email: "neer@gmail.com",

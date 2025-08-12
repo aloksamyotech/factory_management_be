@@ -35,20 +35,20 @@ export class RawMaterialController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
+  async findOne(@Param('id') id: string) {
     return this.rawMaterialService.findOne(id);
   }
 
   @Put(':id')
   async update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() updateRawMaterialDto: UpdateRawMaterialDto,
   ) {
     return this.rawMaterialService.update(id, updateRawMaterialDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number) {
+  async remove(@Param('id') id: string) {
     return this.rawMaterialService.remove(id);
   }
 }
