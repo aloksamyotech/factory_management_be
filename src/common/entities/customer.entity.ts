@@ -3,14 +3,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('customer')
 export class Customer {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  @PrimaryColumn({ type: 'varchar', length: 20, unique: true })
+  id: string;
 
   @IsString()
   @Column({ type: 'varchar' })

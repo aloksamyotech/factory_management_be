@@ -28,20 +28,20 @@ export class ProductController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Product | null> {
+  findOne(@Param('id') id: string): Promise<Product | null> {
     return this.productService.findOne(id);
   }
 
   @Put(':id')
   async update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
   ): Promise<Product | null> {
     return this.productService.update(id, updateProductDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id') id: string) {
     return this.productService.remove(id);
   }
 }

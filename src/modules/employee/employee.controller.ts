@@ -68,14 +68,14 @@ export class EmployeeController {
 
   // @UseGuards(CheckToken)
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: string) {
     return this.employeeService.findOne(id);
   }
 
   // @UseGuards(CheckToken)
   @Put(':id')
   update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() employee: updateEmployeeDto,
   ) {
     return this.employeeService.update(id, employee);

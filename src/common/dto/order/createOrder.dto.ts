@@ -12,16 +12,16 @@ import {
 } from 'class-validator';
 
 class ProductDto {
-  @IsInt()
-  productId: number;
+  @IsString()
+  productId: string;
 
   @IsInt()
   quantity: number;
 }
 
 export class CreateOrderDto {
-  @IsInt()
-  customerId: number;
+  @IsString()
+  customerId: string;
 
   @IsArray()
   @ValidateNested({ each: true })

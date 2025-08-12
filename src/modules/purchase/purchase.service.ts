@@ -9,6 +9,7 @@ import { UpdatePurchaseDto } from 'src/common/dto/purchase/updatePurchase.dto';
 import { PurchaseItems } from 'src/common/entities/purchaseItems.entity';
 import { UpdateStatusDto } from 'src/common/dto/production/updateStatus.dto';
 import { Inventory } from 'src/common/entities/inventory.entity';
+import { randomIDGenerator } from 'src/common/common/IdGen';
 
 @Injectable()
 export class PurchaseService {
@@ -36,7 +37,15 @@ export class PurchaseService {
     if (!vendor) {
       throw new Error('Vendor not found');
     }
+     let findId:any;
+     let generatedID:string;
+     do {
+         generatedID = randomIDGenerator("PUR",6);
+         findId = await this.purchaseRepository.findOne({where:{id:generatedID}});
+     }while(findId);
+
     const purchase = this.purchaseRepository.create({
+      id:generatedID,
       vendorId: vendor,
       totalAmount,
       expectedDeliveryDate,
@@ -84,7 +93,7 @@ export class PurchaseService {
       });
       return data;
     }
-  findOne(id: number) {
+  findOne(id: string) {
     const data = this.purchaseRepository.findOne({
       where: { id },
       relations: ['itemId', 'vendorId', 'itemId.rawMaterial'],
@@ -92,11 +101,11 @@ export class PurchaseService {
     return data
   }
 
-  remove(id: number) {
+  remove(id: string) {
     this.purchaseRepository.delete(id);
   }
 
-  async updateStatus(id: number, dto: UpdateStatusDto) {
+  async updateStatus(id: string, dto: UpdateStatusDto) {
     await this.purchaseRepository.update(id, { status: dto.status });
 
     const data = await this.purchaseRepository.findOne({ where: { id }, relations: ['itemId', 'itemId.rawMaterial'] });

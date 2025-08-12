@@ -22,6 +22,6 @@ export class CreateProductDto {
 
   @IsOptional()
   @IsArray()
-  @IsInt({ each: true })
-  rawMaterial?: number[];
+  @IsString({ each: true })
+  rawMaterial?: string[];
 }

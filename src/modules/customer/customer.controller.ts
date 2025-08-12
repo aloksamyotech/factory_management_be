@@ -30,13 +30,13 @@ export class CustomerController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: string) {
     return this.customerService.findOne(id);
   }
 
   @Put(':id')
   update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() customer: UpdateCustomerDto,
   ) {
     return this.customerService.update(id, customer);

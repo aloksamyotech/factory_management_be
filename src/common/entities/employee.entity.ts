@@ -5,12 +5,14 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity('employees')
 export class Employee {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  @PrimaryColumn({ type: 'varchar', length: 20, unique: true })
+  id: string;
 
   @IsString()
   @Column({ type: 'varchar' })

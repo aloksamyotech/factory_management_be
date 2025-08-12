@@ -33,20 +33,20 @@ export class VendorController {
   }
   
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Vendor | null> {
+  findOne(@Param('id') id: string): Promise<Vendor | null> {
     return this.vendorService.findOne(id);
   }
 
   @Put(':id')
   update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() updateVendorDto: UpdateVendorDto,
   ): Promise<Vendor | null> {
     return this.vendorService.update(id, updateVendorDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id') id: string) {
     return this.vendorService.remove(id);
   }
 }

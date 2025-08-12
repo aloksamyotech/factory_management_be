@@ -7,8 +7,8 @@ export class UpdateMaintenanceDto {
   machineId: number;
 
   @IsOptional()
-  @IsInt()
-  employeeId: number;
+  @IsString()
+  employeeId: string;
 
   @IsOptional()
   @IsString()

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { randomIDGenerator } from 'src/common/common/IdGen';
 import { CreateRawMaterialDto } from 'src/common/dto/rawMaterial/createRaw.dto';
 import { UpdateRawMaterialDto } from 'src/common/dto/rawMaterial/updateRaw.dto';
 import { Inventory } from 'src/common/entities/inventory.entity';
@@ -16,10 +17,15 @@ export class RawMaterialService {
     private inventoryRepository: Repository<Inventory>,
   ) { }
 
-  async create(
-    createRawMaterialDto: CreateRawMaterialDto,
-  ) {
+  async create(createRawMaterialDto: CreateRawMaterialDto){
     const rawMaterial = this.rawMaterialRepository.create(createRawMaterialDto);
+    let findId:any;
+    let generatedID:string;
+    do {
+        generatedID = randomIDGenerator("RM",6);
+        findId = await this.rawMaterialRepository.findOne({where:{id:generatedID}});
+    }while(findId);
+    rawMaterial.id = generatedID;
     const saveMaterial = await this.rawMaterialRepository.save(rawMaterial);
 
     const inventoryItem = this.inventoryRepository.create({
@@ -47,13 +53,13 @@ export class RawMaterialService {
     return data
   }
 
-  async findOne(id: number): Promise<RawMaterial | null> {
+  async findOne(id: string): Promise<RawMaterial | null> {
     const data = this.rawMaterialRepository.findOne({ where: { id } });
     return data
   }
 
   async update(
-    id: number,
+    id: string,
     updateRawMaterialDto: UpdateRawMaterialDto,
   ) {
     await this.rawMaterialRepository.update(id, updateRawMaterialDto);
@@ -61,7 +67,7 @@ export class RawMaterialService {
     return data
   }
 
-  remove(id: number) {
+  remove(id: string) {
     this.rawMaterialRepository.delete(id);
   }
 }

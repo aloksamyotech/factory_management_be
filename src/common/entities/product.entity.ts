@@ -6,13 +6,15 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  PrimaryColumn,
 } from 'typeorm';
 import { RawMaterial } from './rawMaterial.entity';
 
 @Entity('products')
 export class Product {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  @PrimaryColumn({ type: 'varchar', length: 20, unique: true })
+  id: string;
 
   @Column({ type: 'varchar' })
   name: string;

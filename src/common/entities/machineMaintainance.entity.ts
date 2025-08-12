@@ -6,14 +6,16 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
+  PrimaryColumn,
 } from 'typeorm';
 import { Machine } from './machine.entity';
 import { Employee } from './employee.entity';
 
 @Entity('maintenance')
 export class Maintenance {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  @PrimaryColumn({ type: 'varchar', length: 20, unique: true })
+  id: string;
 
   @ManyToOne(() => Machine)
   @JoinColumn({ name: 'machineId' })

@@ -21,12 +21,12 @@ export class MachineController {
   } //define route before the dynamic route to prevent overwrite this route
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: string) {
     return this.machineService.findOne(id);
   }
 
   @Get('/maintenance/:id')
-  findMaintenanceById(@Param('id') id: number) {
+  findMaintenanceById(@Param('id') id: string) {
     return this.machineService.findMaintenanceById(id);
   }
 
@@ -44,7 +44,7 @@ export class MachineController {
 
   @Put(':id')
   update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() machine: UpdateMachineDto,
   ) {
     return this.machineService.update(id, machine);
@@ -52,7 +52,7 @@ export class MachineController {
 
   @Put('/maintenance/:id')
   updateMaintenance(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() maintenance: Maintenance,
   ) {
     return this.machineService.updateMaintenance(id, maintenance);

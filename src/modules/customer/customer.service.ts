@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
+import { randomIDGenerator } from 'src/common/common/IdGen';
 import { CreateCustomerDto } from 'src/common/dto/customer/createCustomer.dto';
 import { UpdateCustomerDto } from 'src/common/dto/customer/updateCustomer.dto';
 import { Customer } from 'src/common/entities/customer.entity';
@@ -15,6 +16,13 @@ export class CustomerService {
 
   async create(customer: CreateCustomerDto) {
     const data = this.customerRepository.create(customer);
+    let findId: any;
+    let generatedID: string;
+    do{
+      generatedID = randomIDGenerator("CS",6);
+      findId = await this.customerRepository.findOne({where:{id:generatedID}});
+    }while(findId);
+    data.id = generatedID;
     const newCustomer = await this.customerRepository.save(data)
     return newCustomer;
   }
@@ -30,12 +38,12 @@ export class CustomerService {
     return data
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const data = await this.customerRepository.findOne({ where: { id } });
     return data
   }
 
-  async update(id: number, customer: UpdateCustomerDto) {
+  async update(id: string, customer: UpdateCustomerDto) {
     await this.customerRepository.update(id, customer);
     const data = await this.customerRepository.findOne({ where: { id } });
     return data

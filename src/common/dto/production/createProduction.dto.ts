@@ -2,18 +2,18 @@ import { Type } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsInt, IsDateString, IsString, IsEmpty, IsArray, ValidateNested } from 'class-validator';
 export class RawMaterialItem {
   @IsOptional()
-  rawMaterialId?: number;
+  rawMaterialId?: string;
   @IsOptional()
   quantity?: number;
 }
 export class CreateProductionDto {
   @IsOptional()
-  @IsInt()
-  machine?: number;
+  @IsString()
+  machine?: string;
 
   @IsNotEmpty()
-  @IsInt()
-  product: number;
+  @IsString()
+  product: string;
 
   @IsNotEmpty()
   @IsInt()

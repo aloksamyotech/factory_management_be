@@ -12,6 +12,7 @@ import { Product } from 'src/common/entities/product.entity';
 import { UpdateStatusDto } from 'src/common/dto/production/updateStatus.dto';
 import { Inventory } from 'src/common/entities/inventory.entity';
 import { RawMaterial } from 'src/common/entities/rawMaterial.entity';
+import { randomIDGenerator } from 'src/common/common/IdGen';
 
 @Injectable()
 export class ProductionService {
@@ -63,8 +64,15 @@ export class ProductionService {
             await this.inventoryRepository.save(inventory);
         }   
     }
+        let findId:any;
+        let generatedID:string;
+        do {
+            generatedID = randomIDGenerator("PRD",6);
+            findId = await this.machineRepository.findOne({where:{id:generatedID}});
+        }while(findId);
 
         const productionNew = this.productionRepository.create({
+            id:generatedID,
             product: productData,
             machine: machineData,
             quantity,
@@ -95,12 +103,12 @@ export class ProductionService {
         });
         return data;
     }
-    async findOne(id: number) {
+    async findOne(id: string) {
         const data = await this.productionRepository.findOne({ where: { id } });
         return data
     }
 
-    async updateStatus(id: number, dto: UpdateStatusDto) {
+    async updateStatus(id: string, dto: UpdateStatusDto) {
         await this.productionRepository.update(id, { status: dto.status });
 
         const data = await this.productionRepository.findOne({ where: { id }, relations: ['product'] });

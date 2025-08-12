@@ -13,7 +13,8 @@ import { Customer } from 'src/common/entities/customer.entity';
 import { Product } from 'src/common/entities/product.entity';
 import { OrderItems } from 'src/common/entities/orderItems.entity';
 import { UpdateStatusDto } from 'src/common/dto/production/updateStatus.dto';
-import { Inventory } from 'src/common/entities/inventory.entity';
+import { Inventory } from 'src/common/entities/inventory.entity'; 
+import { randomIDGenerator } from 'src/common/common/IdGen';
 
 @Injectable()
 export class OrderService {
@@ -42,7 +43,15 @@ export class OrderService {
       throw new Error('Customer not found');
     }
 
+    let findId:any;
+    let generatedID:string;
+    do {
+      generatedID = randomIDGenerator("OD",6);
+      findId = await this.orderRepository.findOne({where:{id:generatedID}});
+    }while(findId);
+
     const order = this.orderRepository.create({
+      id: generatedID,
       customerId: customer,
       totalAmount,
       expectedDeliveryDate,
@@ -92,7 +101,7 @@ export class OrderService {
     });
       return data;
   }
-  async findOne(id: number) {
+  async findOne(id: string) {
     const data = await this.orderRepository.findOne({
       where: { id },
       relations: ['itemId', 'customerId', 'itemId.productId'],
@@ -100,11 +109,11 @@ export class OrderService {
     return data
   }
 
-  remove(id: number) {
+  remove(id: string) {
     this.orderRepository.delete(id);
   }
 
-  async updateStatus(id: number, dto: UpdateStatusDto) {
+  async updateStatus(id: string, dto: UpdateStatusDto) {
     await this.orderRepository.update(id, { status: dto.status });
     const data = await this.orderRepository.findOne({ where: { id }, relations: ['itemId', 'itemId.productId'] });
     if (!data) {
